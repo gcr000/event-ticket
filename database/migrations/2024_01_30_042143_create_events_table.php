@@ -28,6 +28,17 @@ return new class extends Migration
             $table->integer('partecipanti')->default(0);
             $table->boolean('show_referente')->default(true);
             $table->string('is_payment_required')->default('no');
+
+            /*
+             * 'ref_user_name' => 'Giancarlo Uzzo',
+            'ref_user_email' => 'giancarlo.uzzo@rstore.it',
+            'ref_user_phone_number' => '393 0085352',
+            'ref_user_id' => '1',
+             */
+            $table->string('ref_user_name')->nullable();
+            $table->string('ref_user_email')->nullable();
+            $table->string('ref_user_phone_number')->nullable();
+            $table->foreignId('ref_user_id')->nullable()->constrained('users');
             $table->string('price')->default('0')->nullable();
             $table->timestamps();
             $table->softDeletes();

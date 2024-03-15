@@ -48,9 +48,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-2">
+                    {{--<div class="mt-2">
                         <x-custom.select required name="ref_user_id" label="Referente" :data_array="$users"></x-custom.select>
-                    </div>
+                    </div>--}}
                 </div>
             </div>
 

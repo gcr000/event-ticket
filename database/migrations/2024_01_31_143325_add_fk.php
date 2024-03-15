@@ -47,10 +47,6 @@ return new class extends Migration
             'address' => 'Via Notarbartolo, 26 Palermo',
             'phone_number' => '091 611 4366',
             'email' => 'notarbartolo@example.com',
-            'ref_user_name' => 'Giancarlo Uzzo',
-            'ref_user_email' => 'giancarlo.uzzo@rstore.it',
-            'ref_user_phone_number' => '393 0085352',
-            'ref_user_id' => '1',
             'latitude' => '38.13266834817932',
             'longitude' => '13.345886170864107',
             'created_at' => date('Y-m-d H:i:s'),
@@ -63,10 +59,6 @@ return new class extends Migration
             'address' => 'Viale del Fante, 11 Palermo',
             'phone_number' => '091 611 4366',
             'email' => 'mediaworld@example.com',
-            'ref_user_name' => 'Samuele Meli',
-            'ref_user_email' => 'samuele.meli@rstore.it',
-            'ref_user_phone_number' => '4444444444',
-            'ref_user_id' => '2',
             'latitude' => '38.15234361548895',
             'longitude' => '13.340846300125124',
             'created_at' => date('Y-m-d H:i:s'),
@@ -84,6 +76,10 @@ return new class extends Migration
             'max_prenotabili' => '100',
             'duration' => '2',
             'user_id' => '1',
+            'ref_user_name' => 'Samuele Meli',
+            'ref_user_email' => 'samuele.meli@rstore.it',
+            'ref_user_phone_number' => '4444444444',
+            'ref_user_id' => '2',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);
@@ -99,6 +95,10 @@ return new class extends Migration
             'max_prenotabili' => '10000000',
             'duration' => '4',
             'user_id' => '2',
+            'ref_user_name' => 'Giancarlo Uzzo',
+            'ref_user_email' => 'giancarlo.uzzo@rstore.it',
+            'ref_user_phone_number' => '393 0085352',
+            'ref_user_id' => '1',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);
@@ -114,6 +114,10 @@ return new class extends Migration
             'max_prenotabili' => '10000000',
             'duration' => '5',
             'user_id' => '1',
+            'ref_user_name' => 'Giancarlo Uzzo',
+            'ref_user_email' => 'giancarlo.uzzo@rstore.it',
+            'ref_user_phone_number' => '393 0085352',
+            'ref_user_id' => '1',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);
@@ -129,6 +133,10 @@ return new class extends Migration
             'max_prenotabili' => '70',
             'duration' => '8',
             'user_id' => '2',
+            'ref_user_name' => 'Giancarlo Uzzo',
+            'ref_user_email' => 'giancarlo.uzzo@rstore.it',
+            'ref_user_phone_number' => '393 0085352',
+            'ref_user_id' => '1',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);

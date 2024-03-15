@@ -70,20 +70,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-2">
-                        <label for="" class="block text-sm font-medium leading-6 text-gray-900">Referente</label>
-                        <div class="relative mt-2 rounded-md shadow-sm">
-                            <select name="ref_user_id" class="bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="">
-                                @foreach($users as $user)
-                                    <option value="{{$user->id}}"
-                                        @if($user->id == $location->ref_user_id)
-                                            selected
-                                        @endif
-                                    >{{$user->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -127,18 +113,6 @@
         @if(count($location->events) == 0)
             <i>Non ci sono eventi associati a questa sede</i>
         @endif
-        {{--<div class="gap-4">
-            @foreach($location->events as $event)
-                <div class="row">
-                    <div class="col-4">
-                        {{$event->name}}
-                    </div>
-                    <div class="col-4">
-                        {{$event->datetime_from}}
-                    </div>
-                </div>
-            @endforeach
-        </div>--}}
 
     </div>
 

@@ -20,10 +20,6 @@ return new class extends Migration
             $table->string('longitude')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
-            $table->string('ref_user_name')->nullable();
-            $table->string('ref_user_email')->nullable();
-            $table->string('ref_user_phone_number')->nullable();
-            $table->foreignId('ref_user_id')->constrained('users');
             $table->timestamps();
             $table->softDeletes();
         });

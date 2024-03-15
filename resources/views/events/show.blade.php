@@ -62,7 +62,7 @@
                 </h4>
                 <h4 class="italic">
                     @if($event->show_referente)
-                        Referente: <b>{{$event->location->ref_user_name}}</b>
+                        Referente: <b>{{$event->ref_user_name}}</b>
                     @else
                         Referente: non visibile ai partecipanti
                     @endif

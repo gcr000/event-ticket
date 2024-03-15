@@ -146,7 +146,7 @@
                             <div class="email">
                                 <i class="bi bi-envelope"></i>
                                 <h4>Referente:</h4>
-                                <p style="margin-top: -10px">{{$event->location->ref_user_email}} - {{$event->location->ref_user_phone_number}}</p>
+                                <p style="margin-top: -10px">{{$event->ref_user_email}} - {{$event->ref_user_phone_number}}</p>
                             </div>
                         @endif
                     </div>
@@ -230,51 +230,88 @@
                             <script src="https://www.paypal.com/sdk/js?client-id=Aa8OWqhWwkDo97GxF0BcLqR_iLxLXOPmsObJprF4Ow3LCerjtst4eP1EFG6UG-c5tMeV4ZmTJtx64Dhm"></script>
                             <div id="paypal-button-container"></div>
                             <script>
+
                                 document.addEventListener('DOMContentLoaded', function(){
+
+                                    function emailAlreadyUsed(email) {
+                                        return new Promise((resolve, reject) => {
+                                            let url = '{{env('APP_URL')}}/check_event_email';
+                                            let data = {
+                                                email: email,
+                                                event_id: document.querySelector('input[name="event_id"]').value
+                                            };
+                                            fetch(url, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                                },
+                                                body: JSON.stringify(data)
+                                            })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if(data.status === 'ok') {
+                                                        resolve(false);
+                                                    } else {
+                                                        resolve(true);
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    reject(error);
+                                                });
+                                        });
+                                    }
+
+
                                     paypal.Buttons({
                                         createOrder: function(data, actions) {
-
                                             let name = document.querySelector('input[name="nome"]').value;
                                             let email = document.querySelector('input[name="email"]').value;
                                             let phone_number = document.querySelector('input[name="phone_number"]').value;
 
-                                            if(name === '' || email === '' || phone_number === ''){
-                                                customAlert('Errore', 'Inserisci il tuo nome, la tua email e il tuo numero di telefono', 'error');
-                                                return false;
-                                            } else {
-                                                let objData = {
-                                                    nome: name,
-                                                    email,
-                                                    phone_number,
-                                                    first_person: true,
-                                                    event_id: document.querySelector('input[name="event_id"]').value
-                                                };
+                                            // controllo se l'email è già stata utilizzata per prenotare questo evento
+                                            return emailAlreadyUsed(email).then((result) => {
+                                                if(result) {
+                                                    throw new Error('Email già utilizzata per prenotare questo evento');
+                                                } else {
+                                                    if(name === '' || email === '' || phone_number === ''){
+                                                        customAlert('Errore', 'Inserisci il tuo nome, la tua email e il tuo numero di telefono', 'error');
+                                                        throw new Error('Dati mancanti');
+                                                    } else {
+                                                        let objData = {
+                                                            nome: name,
+                                                            email,
+                                                            phone_number,
+                                                            first_person: true,
+                                                            event_id: document.querySelector('input[name="event_id"]').value
+                                                        };
 
-                                                totalDataArr.push(objData);
+                                                        totalDataArr.push(objData);
 
-                                                // controllo se ci sono oggetti duplicati, ed eventualmente li rimuovo
-                                                let uniqueDataArr = totalDataArr.filter((v,i,a)=>a.findIndex(t=>(t.nome === v.nome && t.phone_number === v.phone_number))===i);
+                                                        // controllo se ci sono oggetti duplicati, ed eventualmente li rimuovo
+                                                        let uniqueDataArr = totalDataArr.filter((v,i,a)=>a.findIndex(t=>(t.nome === v.nome && t.phone_number === v.phone_number))===i);
 
-                                                let url = '{{env('APP_URL')}}/bookings';
+                                                        let url = '{{env('APP_URL')}}/bookings';
 
-                                                // scroll to top
-                                                window.scrollTo(0, 0);
+                                                        // scroll to top
+                                                        window.scrollTo(0, 0);
 
-                                                setTimeout(function(){
-                                                    saveData(url, uniqueDataArr, true);
-                                                }, 1500);
+                                                        setTimeout(function(){
+                                                            saveData(url, uniqueDataArr, true);
+                                                        }, 1500);
 
-                                            }
-
-                                            let value = '{{$event->price}}';
-                                            let number_ticket = totalDataArr.length;
-                                            let total = value * number_ticket;
-                                            return actions.order.create({
-                                                purchase_units: [{
-                                                    amount: {
-                                                        value: total.toFixed(2)
+                                                        let value = '{{$event->price}}';
+                                                        let number_ticket = totalDataArr.length;
+                                                        let total = value * number_ticket;
+                                                        return actions.order.create({
+                                                            purchase_units: [{
+                                                                amount: {
+                                                                    value: total.toFixed(2)
+                                                                }
+                                                            }]
+                                                        });
                                                     }
-                                                }]
+                                                }
                                             });
                                         },
                                         onApprove: function(data, actions) {
@@ -290,8 +327,14 @@
                                                 let event_id = '{{$event->id}}';
                                                 window.location.href = '{{env('APP_URL')}}/booking/success/'+dettagli + '/' + event_id + '/' + document.querySelector('input[name="email"]').value;
                                             });
+                                        },
+                                        onError: function (err) {
+                                            //console.log(err);
+                                            customAlert('Errore', err, 'error');
+                                            setTimeout(() => window.location.reload(), 3000);
                                         }
                                     }).render('#paypal-button-container');
+
                                 });
                             </script>
                         @endif

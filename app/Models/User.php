@@ -44,4 +44,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'ref_user_id');
+    }
 }

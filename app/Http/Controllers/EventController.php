@@ -6,6 +6,7 @@ use App\Mail\BookingConfirmation;
 use App\Models\Booking;
 use App\Models\Event;
 use App\Models\Location;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -61,6 +62,9 @@ class EventController extends Controller
         else
             $payment_request = null;
 
+
+        $ref = User::find($request->referente_id);
+
         Event::create([
             'tenant_id' => auth()->user()->tenant_id,
             'name' => $request->name,
@@ -75,6 +79,11 @@ class EventController extends Controller
             'location_id' => $request->location_id,
             'is_payment_required' => $payment_request,
             'price' => $request->payment_request_input ?? null,
+            'referente' => $ref->name . ' ' . $ref->email . ' | ' . $ref->phone_number,
+            'ref_user_name' => $ref->name,
+            'ref_user_email' => $ref->email,
+            'ref_user_phone_number' => $ref->phone_number,
+            'ref_user_id' => $ref->id,
         ]);
 
         return redirect()->route('events.index');
@@ -88,7 +97,7 @@ class EventController extends Controller
         if(!self::checkSameTenant($event))
             return redirect()->route('events.index')->with('error', 'Accesso non autorizzato!');
 
-        $base64Id = base64_encode($event->id);
+        $base64Id = Controller::encryptId($event->id);
         $urlToEvent = env('APP_URL') . '/bookings/' . $base64Id;
 
         return view('events.show', [
@@ -312,14 +321,14 @@ class EventController extends Controller
         // send BookingEmail
         $content = [
             'subject' => 'Conferma prenotazione evento',
-            'urlToEvent' => env('APP_URL') . '/bookings/' . base64_encode($event->id),
+            'urlToEvent' => env('APP_URL') . '/bookings/' . Controller::encryptId($event->id),
             'title' => strtoupper($event->name),
             'day' => date('d/m/Y', strtotime($event->datetime_from)),
             'time' => date('H:i', strtotime($event->datetime_from)),
             'where' => $event->location->name . ' - ' . $event->location->address,
             'location_number' => $event->location->phone_number,
             'location_email' => $event->location->email,
-            'referente' => $event->location->ref_user_name . ' ' . $event->location->ref_user_email . ' | ' . $event->location->ref_user_phone_number,
+            'referente' => $event->ref_user_name . ' ' . $event->ref_user_email . ' | ' . $event->ref_user_phone_number,
             'codes' => $booking->details,
             'show_referente' => $event->show_referente
         ];
@@ -339,4 +348,63 @@ class EventController extends Controller
         return response()->json($events);
     }
 
+    public function check_event_data(Request $request){
+        $location = Location::find($request->location_id)->first();
+        $data = $request->data;
+
+        // check in the database if the event already exists in the same location and in the same date
+        $eventInDate = Event::query()
+
+            ->where('location_id', $request->location_id)
+            ->whereDate('datetime_from', '>=', $data)
+            ->whereDate('datetime_to', '<=', $data)
+
+            ->orWhereDate('datetime_from', '<=', $data)
+            ->whereDate('datetime_to', '>=', $data)
+            ->where('location_id', $request->location_id)
+
+            ->orWhereDate('datetime_from', '<=', $data)
+            ->whereDate('datetime_to', '>=', $data)
+            ->where('location_id', $request->location_id)
+
+            ->orWhereDate('datetime_from', '>=', $data)
+            ->whereDate('datetime_to', '<=', $data)
+            ->where('location_id', $request->location_id)
+
+            ->first();
+
+
+        if($eventInDate)
+            return response()->json([
+                'message' => 'Evento già presente in questa data',
+                'event_id' => $eventInDate->id
+            ]);
+        else
+            return response()->json([
+                'message' => 'Evento non presente in questa data',
+                'event_id' => null
+            ]);
+    }
+
+    public function check_event_email(Request $request){
+        $event = Event::find($request->event_id);
+        $email = $request->email;
+
+        // check in the database if the email is already used for the same event
+        $booking = Booking::query()
+            ->where('event_id', $event->id)
+            ->where('email', $email)
+            ->first();
+
+        if($booking)
+            return response()->json([
+                'message' => 'Email già utilizzata per questo evento',
+                'status' => 'ko'
+            ]);
+        else
+            return response()->json([
+                'message' => 'Email non utilizzata per questo evento',
+                'status' => 'ok'
+            ]);
+    }
 }

@@ -29,9 +29,6 @@
             <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                 Email Sede
             </th>
-            <th colspan="2" class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                Referente
-            </th>
             <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                 &nbsp;
             </th>
@@ -52,12 +49,6 @@
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                         {{$location->email}}
-                    </td>
-                    <td class="px-6 py-4 whitespace-no-wrap">
-                        {{$location->ref_user_name}}
-                    </td>
-                    <td class="px-6 py-4 whitespace-no-wrap">
-                        {{$location->ref_user_phone_number}}
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                         <a class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{env('APP_URL')}}/locations/{{$location->id}}/edit">Dettaglio Sede</a>

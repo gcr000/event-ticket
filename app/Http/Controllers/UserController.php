@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -30,7 +31,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        if($request->role_id != 1) {
+
+            $user = new User();
+            $user->name = $request->name_create;
+            $user->email = $request->email_create;
+            $user->phone_number = $request->phone_number_create;
+            $user->role_id = $request->role_id_create;
+            $user->password = Hash::make($request->password_create);
+            $user->tenant_id = auth()->user()->tenant_id;
+            $user->save();
+        }
+        return redirect()->route('users.index');
     }
 
     /**
@@ -54,7 +67,26 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::find($id);
+
+        if($user->email !== $request->email && User::query()->where('email', $request->email)->exists())
+            return response()->json(['message' => 'Email già in uso'], 400);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone_number = $request->phone_number;
+        $user->role_id = $user->role_id === 1 ? 1 : $request->role_id;
+        $user->password = $request->password ? Hash::make($request->password) : $user->password;
+
+        // modifico tutti i dati dell'utente negli eventi
+        if($user->role_id !== 1) $user->events()->update([
+            'ref_user_name' => $user->name,
+            'ref_user_email' => $user->email,
+            'ref_user_phone_number' => $user->phone_number
+        ]);
+
+        if($user->role_id !== 1) $user->save();
+        return response()->json($user);
     }
 
     /**
@@ -63,5 +95,14 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function disable_user(string $id)
+    {
+        $user = User::find($id);
+        if($user->role_id != 1)
+        $user->is_disabled = !$user->is_disabled;
+        if($user->role_id !== 1) $user->save();
+        return response()->json($user);
     }
 }

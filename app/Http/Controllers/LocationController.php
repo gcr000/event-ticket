@@ -34,11 +34,6 @@ class LocationController extends Controller
     public function store(Request $request)
     {
         $loc = Location::create($request->all());
-
-        $ref = User::find($request->ref_user_id);
-        $loc->ref_user_name = $ref->name;
-        $loc->ref_user_email = $ref->email;
-        $loc->ref_user_phone_number = $ref->phone_number;
         $loc->tenant_id = auth()->user()->tenant_id;
         $loc->save();
 
@@ -76,13 +71,6 @@ class LocationController extends Controller
             return redirect()->route('locations.index')->with('error', 'Accesso non autorizzato!');;
 
         $location->update($request->all());
-
-        $ref = User::find($request->ref_user_id);
-        $location->ref_user_name = $ref->name;
-        $location->ref_user_email = $ref->email;
-        $location->ref_user_phone_number = $ref->phone_number;
-        $location->save();
-
         return redirect()->route('locations.index');
     }
 

@@ -24,7 +24,7 @@ class BookingController extends Controller
     }
     public function booking($base64EventiId)
     {
-        $eventId = base64_decode($base64EventiId);
+        $eventId = Controller::decryptId($base64EventiId);
         $event = Event::find($eventId);
 
         if(!$event)
@@ -58,7 +58,7 @@ class BookingController extends Controller
 
     public function success($details, $event_id, $email){
 
-        $dati = json_decode(base64_decode($details), true);
+        $dati = json_decode(Controller::decryptId($details), true);
 
         $id_paypal = $dati['id'];
         $payer_name = $dati['payer']['name']['given_name'];
@@ -68,7 +68,7 @@ class BookingController extends Controller
         $amount = $dati['purchase_units'][0]['amount']['value'];
         $currency = $dati['purchase_units'][0]['amount']['currency_code'];
 
-        $dettagli = base64_decode($details);
+        $dettagli = Controller::decryptId($details);
 
         info($email);
         info($event_id);

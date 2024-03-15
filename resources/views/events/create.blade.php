@@ -56,7 +56,7 @@
                             <div class="col w-1/3 ms-4 ">
                                 <label for="" class="block text-sm font-medium leading-6 text-gray-900">Costo prenotazione</label>
                                 <div class="relative mt-2 rounded-md shadow-sm">
-                                    <input disabled id="payment_request_input" name="payment_request_input" value="" min="" type="number" style="height: 46px" class="bg-gray-300 block w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <input disabled id="payment_request_input" name="payment_request_input" value="" min="" step="0.01" type="number" style="height: 46px" class="bg-gray-300 block w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
                             <div class="col w-1/3 ms-4 ">
@@ -72,6 +72,19 @@
                         </div>
                     </div>
 
+                    <div class="mt-4">
+                        <label for="" class="block text-sm font-medium leading-6 text-gray-900">Scegli il referente per l'evento</label>
+                        <div class="relative mt-2 rounded-md shadow-sm">
+                            <select required name="referente_id" class="bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">Scegli il referente</option>
+                                @foreach(\App\Models\User::query()->where('tenant_id', \Illuminate\Support\Facades\Auth::user()->tenant_id)->get() as $user)
+                                    <option value="{{$user->id}}">{{$user->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+
                     {{-- EVENTO SCELTA SEDE --}}
                     <div class="mt-4">
                         <label for="" class="block text-sm font-medium leading-6 text-gray-900">Sede</label>
@@ -86,8 +99,10 @@
                         {{--<x-custom.select id="location_select" :data_array="$locations" required name="location_id" label="Scegli la sede"></x-custom.select>--}}
                     </div>
 
+
+
                     {{-- EVENTO PERIODO DATA  --}}
-                    <div class="mt-6 space-y-6">
+                    <div class="mt-6 space-y-6" id="radio_buttons" style="display: none">
                         <div class="flex items-center gap-x-3">
                             <input required value="1" id="check_singolo" onclick="toggleShow('check_singolo')" name="singolo_giorno" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
                             <label for="check_singolo" class="block text-sm font-medium leading-6 text-gray-900">Singolo Giorno</label>
@@ -100,12 +115,6 @@
 
                     {{-- EVENTO PERIODO DATA  --}}
                     <div id="periods"></div>
-
-                    {{--<div id="div_periodo" style="display: none"></div>
-
-                    --}}{{-- EVENTO SINGOLA DATA  --}}{{--
-                    <div id="div_singolo" style="display: block"></div>--}}
-
 
                     <div class="mt-2 flex justify-end">
                         <label for="" class=""></label>
@@ -151,14 +160,18 @@
                 payment_request_input.classList.add('bg-gray-300');
                 payment_request_input.removeAttribute('required');
             }
-
         }
 
         let html_singolo = `
             <div class="mt-4">
                 <div class="flex flex-row gap-4">
                     <div class="" style="width: 70%">
-                        <x-custom.input required name="datetime_from" type="date" class="mx-auto w-full" label="Data" placeholder=""></x-custom.input>
+                        <div>
+                            <label for="" class="block text-sm font-medium leading-6 text-gray-900">Data</label>
+                            <div class="relative mt-2 rounded-md shadow-sm">
+                                <input onchange="checkData(this.value, document.getElementById('location_id').value)" type="date" name="datetime_from" value="" class = "block w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                        </div>
                     </div>
                     <div class="" style="width: 30%">
                         <x-custom.input required name="time_from" type="time" class="mx-auto w-full" label="Ora" placeholder=""></x-custom.input>
@@ -171,24 +184,74 @@
             <div class="mt-4">
                 <div class="flex flex-row gap-4">
                     <div class="" style="width: 70%">
-                        <x-custom.input required name="datetime_from" type="date" class="mx-auto w-full" label="Data Inizio" placeholder=""></x-custom.input>
+                        <div>
+                            <label for="" class="block text-sm font-medium leading-6 text-gray-900">Data Inizio</label>
+                            <div class="relative mt-2 rounded-md shadow-sm">
+                                <input onchange="checkData(this.value, document.getElementById('location_id').value)" type="date" name="datetime_from" value="" class = "block w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder=""
+                                >
+                            </div>
+                        </div>
                     </div>
                     <div class="" style="width: 30%">
                         <x-custom.input required name="time_from" type="time" class="mx-auto w-full" label="Ora Inizio" placeholder=""></x-custom.input>
                     </div>
                 </div>
             </div>
+
             <div class="mt-4">
                 <div class="flex flex-row gap-4">
                     <div class="" style="width: 70%">
-                        <x-custom.input required name="datetime_to" type="date" class="text-center appearance-none w-full" label="Data Fine" placeholder=""></x-custom.input>
+                        <div>
+                            <label for="" class="block text-sm font-medium leading-6 text-gray-900">Data Fine</label>
+                            <div class="relative mt-2 rounded-md shadow-sm">
+                                <input onchange="checkData(this.value, document.getElementById('location_id').value)" type="date" name="datetime_to" value="" class = "block w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder=""
+                                >
+                            </div>
+                        </div>
                     </div>
                     <div class="" style="width: 30%">
-                        <x-custom.input required name="time_to" type="time" class="text-center appearance-none w-full" label="Ora Fine" placeholder=""></x-custom.input>
+                        <x-custom.input required name="time_to" type="time" class="mx-auto w-full" label="Ora Fine" placeholder=""></x-custom.input>
                     </div>
                 </div>
             </div>
         `;
+
+        function getToken() {
+            let metas = document.getElementsByTagName("meta");
+            for (let i = 0; i < metas.length; i++) {
+                let meta = metas[i];
+                if (meta.name === "csrf-token") {
+                    return meta.content;
+                }
+            }
+        }
+
+        async function checkData(data, location_id){
+
+            let url = "{{env('APP_URL')}}/check_event_data/";
+            let token = getToken();
+
+            let check = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({
+                    data: data,
+                    location_id: location_id
+                })
+            })
+
+            let response = await check.json();
+            let event_id = response.event_id;
+
+            if(event_id != null){
+                customAlert('Data già occupata', 'Fai attenzione: il '+moment(data).format('DD/MM/YYYY')+' la location selezionata è già occupata da un altro evento. Potrai comunque creare l\'evento', 'error');
+            }
+        }
 
         function toggleShow(id) {
             let periods = document.getElementById('periods');
@@ -225,13 +288,17 @@
             last_events.appendChild(spinner);
 
 
+            let radio_buttons = document.getElementById('radio_buttons');
             if(location_id === ''){
                 last_events.innerHTML = '';
                 let p = document.createElement('p');
                 p.classList.add('text-center');
                 p.innerHTML = '<i>Nessuna sede selezionata</i>';
                 last_events.appendChild(p);
+                radio_buttons.style.display = 'none';
                 return;
+            } else {
+                radio_buttons.style.display = '';
             }
 
             let url = "{{env('APP_URL')}}/last_location_events/" + location_id;

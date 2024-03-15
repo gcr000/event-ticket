@@ -99,7 +99,7 @@
                                       </div>
                                       <div class="col-12">
                                           @if($event->show_referente)
-                                                Referente: {{$event->location->ref_user_name}}
+                                                Referente: {{$event->ref_user_name}}
                                             @else
                                                 Referente: non visibile ai partecipanti
                                             @endif
@@ -124,7 +124,7 @@
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
-                        @php($base64Id = base64_encode($event->id))
+                        @php($base64Id = \App\Http\Controllers\Controller::encryptId($event->id))
                         <a href="{{env('APP_URL') . '/bookings/' . $base64Id}}">Link prenotazione</a> <br>
                         <span style="cursor: pointer; color: orange" onclick="manageEvent('archiviare', {{$event->id}})" id="archivia_{{$event->id}}">Archivia</span> <br>
                         <span style="cursor: pointer; color: red" onclick="manageEvent('eliminare', {{$event->id}})" id="elimina_{{$event->id}}">Elimina</span>

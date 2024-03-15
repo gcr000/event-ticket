@@ -43,12 +43,15 @@ Route::middleware('auth')->group(function () {
     Route::post('users', [UserController::class, 'store'])->name('users.store');
     Route::patch('users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('disable_user/{user}', [UserController::class, 'disable_user'])->name('users.disable_user');
 
     // Events
     Route::get('events', [EventController::class, 'index'])->name('events.index');
     Route::get('events/create', [EventController::class, 'create'])->name('events.create');
     Route::post('events/create', [EventController::class, 'store'])->name('events.store');
     Route::get('events/{event}', [EventController::class, 'show'])->name('events.show');
+    Route::post('check_event_data',[EventController::class, 'check_event_data'])->name('events.check_event_data');
+    Route::post('check_event_email', [EventController::class, 'check_event_email'])->name('events.check_event_email');
     Route::get('last_location_events/{location_id}', [EventController::class, 'last_location_events'])->name('events.last_location_events');
 
 
@@ -61,7 +64,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('test', function(){
 
-        $booking = Booking::find(16);
+        $booking = Booking::find(1);
         $event = $booking->event;
         // send BookingEmail
         $content = [
@@ -96,5 +99,16 @@ Route::post('check-otp', [EventController::class, 'check_otp'])->name('bookings.
 Route::post('/pay', [BookingController::class, 'pay'])->name('booking.pay');
 Route::get('/booking/success/{details}/{event_id}/{email}', [BookingController::class, 'success'])->name('booking.success');
 
+$tenances = \App\Models\Tenant::all();
+
+foreach ($tenances as $item) {
+    Route::get('location/'.$item->url_name, function () use ($item) {
+        $locations = \App\Models\Location::where('tenant_id', $item->id)->get();
+        return view('locations.frontend_page', [
+            'tenance' => $item,
+            'locations' => $locations,
+        ]);
+    })->name($item->url_name);
+}
 
 require __DIR__.'/auth.php';
