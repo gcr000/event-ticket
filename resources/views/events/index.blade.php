@@ -15,14 +15,13 @@
 
     <div class="flex flex-row justify-end mb-4">
         <div>
-            <input style="width: 300px" class="block w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="text" placeholder="Cerca...">
+            <input style="width: 300px; height: 45px" id="search-box" onkeyup="SearchBox('events')" class="block w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="text" placeholder="Cerca evento...">
         </div>
-        <div class="ms-3">
-            <select style="height: 40px; width: 300px" name="" id="" class = "bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option value="">Tutti</option>
-                @foreach(\App\Models\Location::query()->where('tenant_id', auth()->user()->tenant_id)->get() as $location)
-                    <option value="">{{$location->name}}</option>
-                @endforeach
+        <div>
+            <select onchange="loadEvents(this.value)" id="select_type" style="height: 45px; margin-left: 10px" class="block w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <option value="all">Tutti</option>
+                <option value="archiviati">Archiviati</option>
+                <option value="non_archiviati">Non Archiviati</option>
             </select>
         </div>
     </div>
@@ -40,20 +39,17 @@
             <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                 Data e Sede
             </th>
-            {{--<th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                Tipologia Presenza
+            <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+
             </th>
-            <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider text-center">
-                Prenotati/Partecipanti
-            </th>--}}
             <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
 
             </th>
         </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody class="bg-white divide-y divide-gray-200" id="events">
             @foreach($events as $event)
-                <tr id="event_{{$event->id}}">
+                <tr id="event_{{$event->id}}" @if($event->is_archiviato) style="background-color: lightgrey" @endif>
                     <td class="px-6 py-4 whitespace-no-wrap">
                         <a class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{route('events.show', $event->id)}}">
                             {{$event->name}}
@@ -124,10 +120,11 @@
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
-                        @php($base64Id = \App\Http\Controllers\Controller::encryptId($event->id))
-                        <a href="{{env('APP_URL') . '/bookings/' . $base64Id}}">Link prenotazione</a> <br>
-                        <span style="cursor: pointer; color: orange" onclick="manageEvent('archiviare', {{$event->id}})" id="archivia_{{$event->id}}">Archivia</span> <br>
-                        <span style="cursor: pointer; color: red" onclick="manageEvent('eliminare', {{$event->id}})" id="elimina_{{$event->id}}">Elimina</span>
+                        @if(!$event->is_archiviato)
+                            @php($base64Id = \App\Http\Controllers\Controller::encryptId($event->id))
+                            <a href="{{env('APP_URL') . '/bookings/' . $base64Id}}">Link prenotazione</a> <br>
+                            <span style="cursor: pointer; color: orange" onclick="manageEvent('archiviare', {{$event->id}})" id="archivia_{{$event->id}}">Archivia</span> <br>
+                        @endif
                     </td>
                 </tr>
             @endforeach
@@ -135,6 +132,21 @@
     </table>
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // cerco se c'è un parametro nella query string
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type');
+
+            // se c'è un parametro nella query string, lo seleziono nella select
+            if(type){
+                document.getElementById('select_type').value = type;
+            }
+
+        });
+
+
         function colorRow(rowId){
             // prendo tutte le righe della tabella e cambio il colore di sfondo
             var rows = document.getElementsByTagName('tr');
@@ -147,7 +159,7 @@
 
         function manageEvent(type, eventId){
             if(!confirm('Sei sicuro di voler ' + type + ' l\'evento?')) return;
-            var url = '{{env('APP_URL')}}/events/' + eventId + '/' + type;
+            var url = '{{env('APP_URL')}}/archivia_evento/' + eventId;
 
             fetch(url, {
                 method: 'GET',
@@ -157,9 +169,18 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                window.location.reload();
             })
         }
+
+        function loadEvents(type){
+            if(type === 'all'){
+                window.location.href = '{{env('APP_URL')}}/events';
+            } else {
+                window.location.href = '{{env('APP_URL')}}/events?type=' + type;
+            }
+        }
+
     </script>
 
 </x-app-layout>

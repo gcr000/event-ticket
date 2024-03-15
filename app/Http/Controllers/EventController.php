@@ -13,19 +13,21 @@ use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
+        $events = Event::query()->where('tenant_id', auth()->user()->tenant_id);
+
+        if(request()->has('type'))
+            if(request('type') == 'archiviati')
+                $events->where('is_archiviato', true);
+            else
+                $events->where('is_archiviato', false);
+
         return view('events.index', [
-            'events' => Event::query()->where('tenant_id', auth()->user()->tenant_id)->get(),
+            'events' => $events->get(),
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('events.create',[
@@ -33,9 +35,6 @@ class EventController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         if($request->singolo_giorno) {
@@ -406,5 +405,12 @@ class EventController extends Controller
                 'message' => 'Email non utilizzata per questo evento',
                 'status' => 'ok'
             ]);
+    }
+
+    public function archivia_evento(Event $event)
+    {
+        $event->is_archiviato = true;
+        $event->save();
+        return response()->json(['message' => 'Evento archiviato', 'status' => 'ok']);
     }
 }

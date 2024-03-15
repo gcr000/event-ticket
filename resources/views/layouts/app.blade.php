@@ -78,6 +78,33 @@
                     showConfirmButton: false,
                 });
             }
+
+            function SearchBox(box) {
+                var input, filter, table, tr, td, i, k, j, found;
+                input = document.getElementById("search-box");
+                filter = input.value.toUpperCase();
+                tr = document.getElementById(box).children;
+
+                // Loop through all table rows, and hide those who don't match the search query
+                for (i = 0; i < tr.length; i++) {
+                    if (filter.length > 1) {
+                        td = tr[i].innerText || tr[i].textContent; // Supporto per browser
+                        if (td.toUpperCase().indexOf(filter) > -1) {
+                            found = 1;
+                        } else {
+                            found = 0;
+                        }
+                        if (found === 1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    } else {
+                        tr[i].style.display = "";
+                    }
+                }
+            }
+
         </script>
     </body>
 </html>

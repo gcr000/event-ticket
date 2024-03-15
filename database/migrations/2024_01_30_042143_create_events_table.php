@@ -40,6 +40,7 @@ return new class extends Migration
             $table->string('ref_user_phone_number')->nullable();
             $table->foreignId('ref_user_id')->nullable()->constrained('users');
             $table->string('price')->default('0')->nullable();
+            $table->boolean('is_archiviato')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

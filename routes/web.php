@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::post('check_event_data',[EventController::class, 'check_event_data'])->name('events.check_event_data');
     Route::post('check_event_email', [EventController::class, 'check_event_email'])->name('events.check_event_email');
     Route::get('last_location_events/{location_id}', [EventController::class, 'last_location_events'])->name('events.last_location_events');
+    Route::get('archivia_evento/{event}', [EventController::class, 'archivia_evento'])->name('events.archivia_evento');
 
 
     // Locations
