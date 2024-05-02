@@ -21,6 +21,8 @@ return new class extends Migration
             $table->float('amount', 8, 2);
             $table->string('currency');
             $table->string('payment_status');
+            $table->foreignId('event_id')->constrained();
+            $table->foreignId('booking_id')->constrained();
             $table->timestamps();
         });
     }

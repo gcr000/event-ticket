@@ -49,9 +49,9 @@
         </thead>
         <tbody class="bg-white divide-y divide-gray-200" id="events">
             @foreach($events as $event)
-                <tr id="event_{{$event->id}}" @if($event->is_archiviato) style="background-color: lightgrey" @endif>
+                <tr id="event_{{$event->id}}" @if($event->is_archiviato) style="color: lightgrey" @endif>
                     <td class="px-6 py-4 whitespace-no-wrap">
-                        <a class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{route('events.show', $event->id)}}">
+                        <a @if($event->is_archiviato) style="text-decoration: none!important; color: black" @endif class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{route('events.show', $event->id)}}">
                             {{$event->name}}
                         </a>
                     </td>
@@ -63,9 +63,11 @@
                         <br>
                         {{$event->location->name}}
                         @if($event->is_payment_required != 'no')
-                            <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
-                                €
-                            </span>
+                            @if(!$event->is_archiviato)
+                                <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
+                                    €
+                                </span>
+                            @endif
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap text-center">
@@ -113,9 +115,11 @@
                                 <svg class="absolute left-0 top-full h-2 w-full text-black" x="0px" y="0px" viewBox="0 0 255 255" xml:space="preserve"><polygon class="fill-current" points="0,0 127.5,127.5 255,0" /></svg>
                               </div>
                             </div>
-                            <span onmouseover="colorRow('event_'+{{$event->id}})" style="cursor: pointer"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" /></svg>
-                            </span>
+                            @if(!$event->is_archiviato)
+                                <span onmouseover="colorRow('event_'+{{$event->id}})" style="cursor: pointer"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" /></svg>
+                                </span>
+                            @endif
                           </span>
                         </div>
                     </td>

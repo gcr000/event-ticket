@@ -140,7 +140,7 @@
                 @foreach(\App\Models\BookingDetail::query()->where('event_id', $event->id)->orderBy('created_at')->get() as $detail)
                     @if($detail->booking->is_confirmed)
                         <tr class="border-t">
-                            <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left text-blueGray-700">
+                            <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left">
                                 #{{$detail->booking_id}} {{$detail->name}}
                             </th>
                             <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4"> {{$detail->email}} </td>

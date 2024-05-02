@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\BookingConfirmation;
+use App\Mail\BookingSendCodeMail;
 use App\Models\Booking;
 use App\Models\Event;
 use App\Models\Location;
@@ -78,7 +79,7 @@ class EventController extends Controller
             'location_id' => $request->location_id,
             'is_payment_required' => $payment_request,
             'price' => $request->payment_request_input ?? null,
-            'referente' => $ref->name . ' ' . $ref->email . ' | ' . $ref->phone_number,
+            //'referente' => $ref->name . ' ' . $ref->email . ' | ' . $ref->phone_number,
             'ref_user_name' => $ref->name,
             'ref_user_email' => $ref->email,
             'ref_user_phone_number' => $ref->phone_number,
@@ -229,10 +230,14 @@ class EventController extends Controller
                 $bookingDetail->name = $item['nome'];
                 $bookingDetail->phone_number = $item['phone_number'];
                 $bookingDetail->save();
-
                 $bookingDetail->booking_code = time() . strtoupper(Str::random(1)) . $booking->id . strtoupper(Str::random(1)) .$bookingDetail->id;
                 $bookingDetail->save();
             }
+
+
+            $urlToEvent = env('APP_URL') . '/bookings/' . Controller::encryptId($event->id);
+
+            Mail::to($booking->email)->send(new BookingSendCodeMail($booking->otp, $event->name, $customer_name, $urlToEvent));
 
             return response()->json([
                 'phone_code' => $booking->otp,

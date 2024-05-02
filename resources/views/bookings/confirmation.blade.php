@@ -43,41 +43,57 @@
                 <br>
                 <br>
                 <p>Conferma la tua prenotazione</p>
+            @else
+                @php($tenant = $booking->tenant)
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 mt-5">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <img src="{{ asset('ok.svg') }}" alt="Prenotazione completata con successo" class="img-fluid" style="width: 60%">
+                                    <h2 class="card-title">Prenotazione completata con successo!</h2>
+                                    <p class="card-text">Ti ringraziamo per la tua prenotazione. I tuoi biglietti verranno inviati via email.</p>
+                                    <p class="card-text">Per eventuali domande, contattaci a <a href="mailto:{{$tenant->email}}">{{$tenant->email}}</a>.</p>
+
+                                    <br>
+                                    {{$tenant->name}} - {{$tenant->phone}}
+                                    @if(!$booking->is_confirmed)
+                                        <h6>Prenotazione effettuata il: {{$data_richiesta}}</h6>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endif
 
-            <div class="card">
-                <div class="card-header">
-                    <h4>{{$status}}</h4>
-                    <p>{{$msg}}</p>
-                    @if(!$booking->is_confirmed)
-                        <h6>Prenotazione effettuata il: {{$data_richiesta}}</h6>
-                    @else
-                        <h6>{{date('d/m/Y H:i', strtotime($booking->confirmed_at))}}</h6>
-                    @endif
-                </div>
-                @if(!$booking->is_confirmed)
-                    <div class="card-body">
-                        <div class="container">
-                            <div class="row justify-content-md-center">
-                                <div class="col-md-4 text-center">
-                                    <div class="row">
-                                        <div class="col-sm-12 mt-5 bgWhite">
-                                            <div class="title">
-                                                Inserisci il codice ricevuto via SMS
-                                            </div>
 
-                                            <form action="" class="mt-5">
-                                                <input autofocus class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(1)' maxlength=1 >
-                                                <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(2)' maxlength=1 >
-                                                <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(3)' maxlength=1 >
-                                                <input class="otp" type="text" oninput='digitValidate(this)'onkeyup='tabChange(4)' maxlength=1 >
-                                                <input class="otp" type="text" oninput='digitValidate(this)'onkeyup='tabChange(5)' maxlength=1 >
-                                                <input class="otp" type="text" oninput='digitValidate(this)'onkeyup='tabChange(6)' maxlength=1 >
-                                            </form>
-                                            <hr class="mt-4">
-                                            <button class='btn btn-primary btn-block mt-4 mb-4 customBtn btn-lg' style="border-radius: 10px" onclick="confirmCode()">
-                                                &nbsp;&nbsp;Conferma&nbsp;&nbsp;
-                                            </button>
+
+                @if(!$booking->is_confirmed)
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row justify-content-md-center">
+                                    <div class="col-md-4 text-center">
+                                        <div class="row">
+                                            <div class="col-sm-12 mt-5 bgWhite">
+                                                <div class="title">
+                                                    Inserisci il codice ricevuto via Email
+                                                </div>
+
+                                                <form action="" class="mt-5">
+                                                    <input autofocus class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(1)' maxlength=1 >
+                                                    <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(2)' maxlength=1 >
+                                                    <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(3)' maxlength=1 >
+                                                    <input class="otp" type="text" oninput='digitValidate(this)'onkeyup='tabChange(4)' maxlength=1 >
+                                                    <input class="otp" type="text" oninput='digitValidate(this)'onkeyup='tabChange(5)' maxlength=1 >
+                                                    <input class="otp" type="text" oninput='digitValidate(this)'onkeyup='tabChange(6)' maxlength=1 >
+                                                </form>
+                                                <hr class="mt-4">
+                                                <button class='btn btn-primary btn-block mt-4 mb-4 customBtn btn-lg' style="border-radius: 10px" onclick="confirmCode()">
+                                                    &nbsp;&nbsp;Conferma&nbsp;&nbsp;
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -85,7 +101,6 @@
                         </div>
                     </div>
                 @endif
-            </div>
         </div>
     </div>
 </div>

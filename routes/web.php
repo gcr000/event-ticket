@@ -94,11 +94,12 @@ Route::middleware('auth')->group(function () {
 
 Route::get('bookings/{base64EventId}', [BookingController::class, 'booking'])->name('bookings.index');
 Route::post('bookings', [EventController::class, 'store_booking'])->name('bookings.store');
+Route::post('bookings/save_paypal', [BookingController::class, 'save_paypal'])->name('bookings.save_paypal');
 Route::get('bookings/confirmation/{booking_id}', [EventController::class, 'confirmation'])->name('bookings.confirmation');
 Route::post('check-otp', [EventController::class, 'check_otp'])->name('bookings.check_otp');
 
 Route::post('/pay', [BookingController::class, 'pay'])->name('booking.pay');
-Route::get('/booking/success/{details}/{event_id}/{email}', [BookingController::class, 'success'])->name('booking.success');
+Route::get('/booking/success/{booking_id}', [BookingController::class, 'success'])->name('booking.success');
 
 $tenances = \App\Models\Tenant::all();
 

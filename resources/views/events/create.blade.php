@@ -48,8 +48,7 @@
                                 <div class="relative mt-2 rounded-md shadow-sm">
                                     <select onchange="setPagamentoPrice(this.value)" name="payment_request" class ="bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="0" selected>No</option>
-                                        <option value="1">Si, pagamento parziale</option>
-                                        <option value="2">Si, pagamento completo</option>
+                                        <option value="2">Si</option>
                                     </select>
                                 </div>
                             </div>

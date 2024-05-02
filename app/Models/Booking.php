@@ -21,4 +21,9 @@ class Booking extends Model
     {
         return $this->hasMany(BookingDetail::class);
     }
+
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
+    }
 }

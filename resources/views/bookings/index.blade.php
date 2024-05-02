@@ -325,7 +325,8 @@
                                             return actions.order.capture().then(function(details) {
                                                 let dettagli = btoa(JSON.stringify(details));
                                                 let event_id = '{{$event->id}}';
-                                                window.location.href = '{{env('APP_URL')}}/booking/success/'+dettagli + '/' + event_id + '/' + document.querySelector('input[name="email"]').value;
+                                                savePaypalDetails(event_id, dettagli);
+                                                //window.location.href = '{{env('APP_URL')}}/booking/success/'+dettagli /*+ '/' + event_id + '/' + document.querySelector('input[name="email"]').value*/;
                                             });
                                         },
                                         onError: function (err) {
@@ -336,6 +337,37 @@
                                     }).render('#paypal-button-container');
 
                                 });
+
+                                async function savePaypalDetails(eventId, details) {
+
+                                    let url = '{{env('APP_URL')}}/bookings/save_paypal';
+                                    let data = {
+                                        event_id: eventId,
+                                        details: details,
+                                        email: document.querySelector('#email').value
+                                    };
+
+                                    let response = await fetch(url, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                        },
+                                        body: JSON.stringify(data)
+                                    });
+
+                                    let result = await response.json();
+
+                                    if(result.status === 'ok') {
+                                        //console.log(result);
+                                        window.location.href = '{{env('APP_URL')}}/booking/success/' + result.booking.id;
+                                    } else {
+                                        document.getElementById('hero').style.opacity = '1';
+                                        document.getElementById('loader').style.display = 'none';
+                                        customAlert('Errore', result.message, 'error');
+                                    }
+
+                                }
                             </script>
                         @endif
                     @endif

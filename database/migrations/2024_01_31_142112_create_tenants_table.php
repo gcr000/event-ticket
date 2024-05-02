@@ -15,6 +15,10 @@ return new class extends Migration
         Schema::create('tenants', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('url_name');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('paypal_client_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -22,11 +26,14 @@ return new class extends Migration
         DB::table('tenants')->insert([
             'id' => 1,
             'name' => 'RStore',
+            'url_name' => 'rstore',
+            'paypal_client_id' => 'Aa8OWqhWwkDo97GxF0BcLqR_iLxLXOPmsObJprF4Ow3LCerjtst4eP1EFG6UG-c5tMeV4ZmTJtx64Dhm'
         ]);
 
         DB::table('tenants')->insert([
             'id' => 2,
             'name' => 'C&C',
+            'url_name' => 'c&c',
         ]);
     }
 

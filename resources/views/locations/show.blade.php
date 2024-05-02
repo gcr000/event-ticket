@@ -70,6 +70,10 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="mt-6">
+                        <a style="cursor: pointer; text-decoration: none!important;" href="{{env('APP_URL')}}/location/{{\Illuminate\Support\Facades\Auth::user()->tenant->url_name}}">LINK PAGINA CLIENTE</a>
+                    </div>
                 </div>
             </div>
 
@@ -94,6 +98,7 @@
         </div>
 
     </form>
+
 
     <div class="mb-4">
         <h1 class="text-xl mb-3">Eventi</h1>
