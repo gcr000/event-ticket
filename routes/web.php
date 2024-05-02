@@ -101,7 +101,7 @@ Route::post('check-otp', [EventController::class, 'check_otp'])->name('bookings.
 Route::post('/pay', [BookingController::class, 'pay'])->name('booking.pay');
 Route::get('/booking/success/{booking_id}', [BookingController::class, 'success'])->name('booking.success');
 
-$tenances = \App\Models\Tenant::all();
+/*$tenances = \App\Models\Tenant::all();
 
 foreach ($tenances as $item) {
     Route::get('location/'.$item->url_name, function () use ($item) {
@@ -111,6 +111,6 @@ foreach ($tenances as $item) {
             'locations' => $locations,
         ]);
     })->name($item->url_name);
-}
+}*/
 
 require __DIR__.'/auth.php';
