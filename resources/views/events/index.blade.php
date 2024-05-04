@@ -54,6 +54,9 @@
                         <a @if($event->is_archiviato) style="text-decoration: none!important; color: black" @endif class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{route('events.show', $event->id)}}">
                             {{$event->name}}
                         </a>
+                        @if(auth()->user()->role_id === 1)
+                            <br><small>Tenant: {{$event->tenant->name}}</small>
+                        @endif
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                         {{$event->description}}

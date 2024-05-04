@@ -13,8 +13,14 @@ class LocationController extends Controller
      */
     public function index()
     {
+        $locations = Location::query();
+
+        if(auth()->user()->role_id != 1)
+            $locations = $locations->where('tenant_id', auth()->user()->tenant_id);
+
+
         return view('locations.index', [
-            'locations' => Location::query()->where('tenant_id', auth()->user()->tenant_id)->get(),
+            'locations' => $locations->get(),
         ]);
     }
 

@@ -40,6 +40,9 @@
                 <tr>
                     <td class="px-6 py-4 whitespace-no-wrap">
                         {{$location->name}}
+                        @if(auth()->user()->role_id === 1)
+                            <br><small>Tenant: {{$location->tenant->name}}</small>
+                        @endif
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                         {{$location->address}}

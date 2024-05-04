@@ -16,4 +16,9 @@ class Location extends Model
     {
         return $this->hasMany(Event::class)->orderBy('events.datetime_from', 'desc');
     }
+
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
+    }
 }

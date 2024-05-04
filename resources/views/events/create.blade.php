@@ -20,7 +20,7 @@
                             <div class="col w-1/3">
                                 <label for="" class="block text-sm font-medium leading-6 text-gray-900">Numero di invitati prenotabili</label>
                                 <div class="relative mt-2 rounded-md shadow-sm">
-                                    <select onchange="partecipantType(this.value)" name="partecipation" class = "bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <select onchange="partecipantType(this.value)" name="partecipation" class = "bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="0">Aperto, senza limitazioni</option>
                                         <option value="1">Limitato, a numero chiuso</option>
                                     </select>
@@ -38,6 +38,7 @@
                                     <input id="ticket_for_person" name="ticket_for_person" value="1" min="1" type="number" style="height: 46px" class="block w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -46,27 +47,28 @@
                             <div class="col w-1/3">
                                 <label for="" class="block text-sm font-medium leading-6 text-gray-900">Prenotazione a pagamento</label>
                                 <div class="relative mt-2 rounded-md shadow-sm">
-                                    <select onchange="setPagamentoPrice(this.value)" name="payment_request" class ="bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <select onchange="setPagamentoPrice(this.value)" name="payment_request" class ="bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="0" selected>No</option>
-                                        <option value="2">Si</option>
+                                        {{--<option value="2">Si</option>--}}
                                     </select>
-                                </div>
-                            </div>
-                            <div class="col w-1/3 ms-4 ">
-                                <label for="" class="block text-sm font-medium leading-6 text-gray-900">Costo prenotazione</label>
-                                <div class="relative mt-2 rounded-md shadow-sm">
-                                    <input disabled id="payment_request_input" name="payment_request_input" value="" min="" step="0.01" type="number" style="height: 46px" class="bg-gray-300 block w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
                             <div class="col w-1/3 ms-4 ">
                                 <label for="" class="block text-sm font-medium leading-6 text-gray-900" style="white-space: nowrap">Mostra referente in pagina prenotazione/email</label>
                                 <div class="relative mt-2 rounded-md shadow-sm">
-                                    <select name="show_referente" class ="bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <select name="show_referente" class ="bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="1">Si</option>
                                         <option value="0">No</option>
                                     </select>
                                 </div>
 
+                            </div>
+
+                            <div class="col w-1/3 ms-4 ">
+                                {{--<label for="" class="block text-sm font-medium leading-6 text-gray-900">Costo prenotazione</label>
+                                <div class="relative mt-2 rounded-md shadow-sm">
+                                    <input disabled id="payment_request_input" name="payment_request_input" value="" min="" step="0.01" type="number" style="height: 46px" class="bg-gray-300 block w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                </div>--}}
                             </div>
                         </div>
                     </div>
@@ -74,7 +76,7 @@
                     <div class="mt-4">
                         <label for="" class="block text-sm font-medium leading-6 text-gray-900">Scegli il referente per l'evento</label>
                         <div class="relative mt-2 rounded-md shadow-sm">
-                            <select required name="referente_id" class="bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select required name="referente_id" class="bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">Scegli il referente</option>
                                 @foreach(\App\Models\User::query()->where('tenant_id', \Illuminate\Support\Facades\Auth::user()->tenant_id)->get() as $user)
                                     <option value="{{$user->id}}">{{$user->name}}</option>
@@ -88,7 +90,7 @@
                     <div class="mt-4">
                         <label for="" class="block text-sm font-medium leading-6 text-gray-900">Sede</label>
                         <div class="relative mt-2 rounded-md shadow-sm">
-                            <select required id="location_id" onchange="getSedeInfoLastEvents(this.value)" name="location_id" class = "bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select required id="location_id" onchange="getSedeInfoLastEvents(this.value)" name="location_id" class = "bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">Scegli la sede</option>
                                 @foreach($locations as $location)
                                     <option value="{{$location->id}}">{{$location->name}}</option>
@@ -248,7 +250,7 @@
             let event_id = response.event_id;
 
             if(event_id != null){
-                customAlert('Data già occupata', 'Fai attenzione: il '+moment(data).format('DD/MM/YYYY')+' la location selezionata è già occupata da un altro evento. Potrai comunque creare l\'evento', 'error');
+                customAlert('Data già occupata', 'Fai attenzione: il '+moment(data).format('DD/MM/YYYY')+' la sede selezionata è già occupata da un altro evento. Potrai comunque creare l\'evento', 'error');
             }
         }
 

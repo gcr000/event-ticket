@@ -247,6 +247,9 @@
                 <tr id="riga_{{$user->id}}" @if($user->is_disabled) style="background-color: #cecec8" @endif>
                     <td class="px-6 py-4 whitespace-no-wrap" data-name="{{$user->name}}">
                         {{$user->name}}
+                        @if(auth()->user()->role_id === 1)
+                            <br><small>Tenant: {{$user->tenant->name}}</small>
+                        @endif
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap" data-email="{{$user->email}}">
                         {{$user->email}}

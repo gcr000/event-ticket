@@ -48,7 +48,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>{{env('APP_NAME')}} Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
@@ -61,9 +61,11 @@
                 <div class="col-12 col-md-6 text-bg-primary">
                     <div class="d-flex align-items-center justify-content-center h-100">
                         <div class="col-10 col-xl-8 py-3">
+                            <h2 class="h1 mb-4 text-center">{{env('APP_NAME')}}</h2>
                             <hr class="border-primary-subtle mb-4">
-                            <h2 class="h1 mb-4">Soluzioni digitali per l'organizzazione di eventi e gestione dei partecipanti.</h2>
+                            <h2 class="h2 mb-4">Soluzioni digitali per l'organizzazione di eventi e la gestione dei partecipanti.</h2>
                             <p class="lead m-0">Strumenti digitali per agevolare la pianificazione di avvenimenti e per coinvolgere gli ospiti in modo efficace, assicurando un'esperienza unica.</p>
+                            <hr class="border-primary-subtle mb-4">
                         </div>
                     </div>
                 </div>
@@ -71,8 +73,8 @@
                     <div class="card-body p-3 p-md-4 p-xl-5">
                         <div class="row">
                             <div class="col-12">
-                                <div class="mb-5 border" style="border-radius: 5px; padding: 10px">
-                                    <h3 style="color: #0C6DFD" class="text-center">{{env('APP_NAME')}} - Login</h3>
+                                <div class="mb-2" style="border-radius: 5px; padding: 10px">
+                                    <h3 style="color: #0C6DFD" class="text-center">Login</h3>
                                     <h6 style="color: #0C6DFD" class="text-center">Pannello di amministrazione</h6>
                                 </div>
                             </div>

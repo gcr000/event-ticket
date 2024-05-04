@@ -16,7 +16,10 @@ class EventController extends Controller
 {
     public function index()
     {
-        $events = Event::query()->where('tenant_id', auth()->user()->tenant_id);
+        $events = Event::query();
+
+        if(auth()->user()->role_id != 1)
+            $events = $events->where('tenant_id', auth()->user()->tenant_id);
 
         if(request()->has('type'))
             if(request('type') == 'archiviati')

@@ -13,8 +13,14 @@ class UserController extends Controller
      */
     public function index()
     {
+        $users = User::query();
+
+        if(auth()->user()->role_id != 1)
+            $users = $users->where('tenant_id', auth()->user()->tenant_id);
+
+
         return view('users.index', [
-            'users' => User::query()->where('tenant_id', auth()->user()->tenant_id)->get()
+            'users' => $users->get()
         ]);
     }
 

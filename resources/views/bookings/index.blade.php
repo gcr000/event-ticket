@@ -51,7 +51,7 @@
 <header id="header" class="fixed-top ">
     <div class="container d-flex align-items-center justify-content-lg-between">
 
-        <h1 class="logo me-auto me-lg-0">Pe24</h1>
+        <h1 class="logo me-auto me-lg-0">BE</h1>
 
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
@@ -69,10 +69,10 @@
 
         <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="150">
             <div class="col-xl-6 col-lg-8">
-                <h1>PalermoEventi24</h1>
+                <h1>{{env('APP_NAME')}}</h1>
                 <h6 style="color: white!important;">
                     Esplora una vasta gamma di eventi e spettacoli, dai concerti alle mostre e alle serate in discoteca.
-                    Scopri cosa c'è di nuovo nella tua città, pianifica le tue serate con facilità e prenota i tuoi biglietti in pochi semplici passaggi.
+                    Scopri cosa c'è di nuovo nella tua città e dintorni, pianifica le tue serate con facilità e prenota i tuoi biglietti in pochi semplici passaggi.
                 </h6>
                 <br>
                 <a href="#contact" class="get-started-btn scrollto">Prenota il tuo ticket</a>
@@ -90,14 +90,14 @@
                     <img src="/new_assets/img/about.jpg" class="img-fluid" alt="">
                 </div>
                 <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right" data-aos-delay="100">
-                    <h3>Benvenuti su PalermoEventi24</h3>
+                    <h3>Benvenuti su {{env('APP_NAME')}}</h3>
                     <p class="fst-italic">
-                        Se stai cercando un modo semplice e sicuro per partecipare agli eventi più emozionanti e culturalmente ricchi di Palermo, sei nel posto giusto. PalermoEventi24 ti garantisce un'esperienza di prenotazione rapida, conveniente e senza stress.
+                        Se stai cercando un modo semplice e sicuro per partecipare agli eventi più emozionanti e culturalmente ricchi della tua città, sei nel posto giusto. {{env('APP_NAME')}} ti garantisce un'esperienza di prenotazione rapida, conveniente e senza stress.
                     </p>
                     <ul>
                         <li><i class="ri-check-double-line"></i> Accesso istantaneo agli eventi.</li>
-                        <li><i class="ri-check-double-line"></i> Prenotare i tuoi biglietti con PalermoEventi24 è conveniente, sicuro e affidabile.</li>
-                        <li><i class="ri-check-double-line"></i> PalermoEventi24 è il tuo compagno ideale per esplorare la vibrante scena culturale di Palermo e vivere esperienze indimenticabili.</li>
+                        <li><i class="ri-check-double-line"></i> Prenotare i tuoi biglietti con {{env('APP_NAME')}} è conveniente, sicuro e affidabile.</li>
+                        <li><i class="ri-check-double-line"></i> {{env('APP_NAME')}} è il tuo compagno ideale per esplorare la vibrante scena della tua città e vivere esperienze indimenticabili.</li>
                     </ul>
                 </div>
             </div>
@@ -117,12 +117,11 @@
 
             <div id="map"></div>
 
-
             <div class="row mt-5">
                 <div class="col-md-12 text-center">
                     <p>
                         <i>
-                            Il numero di telefono serve per ricevere il codice temporaneo per la conferma della prenotazione. Via email invece riceverai il biglietto elettronico per l'accesso all'evento.
+                            Il biglietto elettronico per l'accesso all'evento verrà inviato all'indirizzo email fornito.
                         </i>
                     </p>
                 </div>
@@ -386,11 +385,11 @@
 
     <div class="container">
         <div class="copyright">
-            &copy; Copyright <strong><span>Gp</span></strong>. All Rights Reserved
+            &copy; Copyright <strong><span>BE</span></strong> All Rights Reserved
         </div>
-        <div class="credits">
+        {{--<div class="credits">
             Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-        </div>
+        </div>--}}
     </div>
 </footer><!-- End Footer -->
 
