@@ -117,17 +117,21 @@ class UserController extends Controller
             ->where('permission_id', $permission->id)
             ->first();
 
-        if($permission_user)
+
+        if($permission_user){
             $permission_user->delete();
+            $msg = 'Permesso rimosso';
+        }
         else {
             $permission_user = new PermissionUser();
             $permission_user->user_id = $user->id;
             $permission_user->permission_id = $permission->id;
             $permission_user->tenant_id = $user->tenant_id;
             $permission_user->save();
+            $msg = 'Permesso aggiunto';
         }
 
-        self::customLog('Permesso modificato');
+        self::customLog($msg);
         return response()->json($permission_user);
     }
 }

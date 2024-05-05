@@ -5,12 +5,66 @@
 <x-app-layout>
 
     <div class="flex flex-row justify-between mb-4">
-        <div>
-            <h1>Permessi</h1>
+        <div class="basis-3/4" >
+            <h1>Impostazioni: <span id="tenant_customer">Loading...</span>
+            </h1>
+        </div>
+        <div class="basis-1/4 text-end">
+            <select name="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" onchange="getTentantInfo()" id="select_tenant" style="width: 80%!important;">
+                @foreach($tenances as $tenant)
+                    <option value="{{$tenant->id}}">{{$tenant->name}}</option>
+                @endforeach
+            </select>
         </div>
     </div>
 
-    @foreach($tenances as $tenant)
+    <div id="permissions_container"></div>
+
+    <script>
+        let obj = {};
+
+        document.addEventListener('DOMContentLoaded', function(){
+            getTentantInfo(document.querySelector('#select_tenant').value);
+            obj.tenant_selected = document.querySelector('#select_tenant').value;
+        });
+
+        function getTentantInfo(){
+            $('#permissions_container').html('<div class="text-center">waiting...</div>');
+            let select = document.querySelector('#select_tenant');
+
+            obj.tenant_selected = document.querySelector('#select_tenant').value
+
+            let url = '{{env('APP_URL')}}/settings/get_tenant_info';
+
+            let data = {
+                tenant_id: select.value ? select.value : obj.tenant_selected
+            };
+
+            // prendo il text della option selezionata
+            let tenant_customer = select.options[select.selectedIndex].text;
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{csrf_token()}}',
+                }
+            });
+            jQuery.ajax({
+                url: url,
+                method: 'POST',
+                datatype: 'json',
+                data: data,
+                success: function(response){
+                    $('#tenant_customer').html('<b>'+tenant_customer.toUpperCase()+'</b>');
+                    $('#permissions_container').html(response);
+                },
+                error: function(error){
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+
+    {{--@foreach($tenances as $tenant)
         <div class="card border mb-3 p-2">
             <div class="card-header mb-5">
                 <h3>Tenant: <b>{{$tenant->name}}</b></h3>
@@ -52,7 +106,7 @@
             </div>
         </div>
         <br>
-    @endforeach
+    @endforeach--}}
 
     <script>
         function updatePermission(user_id, permission_id) {

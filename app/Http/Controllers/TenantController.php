@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
 
@@ -61,5 +62,49 @@ class TenantController extends Controller
     public function destroy(Tenant $tenant)
     {
         //
+    }
+
+    public function get_tenant_info(Request $request) {
+
+        $tenant = Tenant::find($request->tenant_id);
+
+        if(auth()->user()->role_id != 1){
+            if(auth()->user()->tenant_id != $tenant->id){
+                return response()->json([
+                    'message' => 'Unauthorized',
+                    'error' => 'Unauthorized'
+                ], 401);
+            }
+        }
+
+        $permissions = Permission::all();
+        return view('settings.detail',[
+            'tenant' => $tenant,
+            'permissions' => $permissions
+        ]);
+    }
+
+    public function update_tenant_data(Request $request){
+
+        $tenant = Tenant::find($request->tenant_id);
+
+        if(auth()->user()->role_id != 1){
+            if(auth()->user()->tenant_id != $tenant->id){
+                return response()->json([
+                    'message' => 'Unauthorized',
+                    'error' => 'Unauthorized'
+                ], 401);
+            }
+        }
+
+        $tenant->email = $request->email;
+        $tenant->phone = $request->phone;
+        $tenant->save();
+
+        self::customLog('Dati tenant aggiornati');
+        return response()->json([
+            'message' => 'Tenant data updated',
+            'tenant' => $tenant
+        ]);
     }
 }

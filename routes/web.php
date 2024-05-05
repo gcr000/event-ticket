@@ -5,6 +5,7 @@
     use App\Http\Controllers\EventController;
     use App\Http\Controllers\LocationController;
     use App\Http\Controllers\ProfileController;
+    use App\Http\Controllers\TenantController;
     use App\Http\Controllers\UserController;
     use App\Mail\BookingConfirmation;
     use App\Models\Booking;
@@ -67,6 +68,8 @@ Route::middleware('auth')->group(function () {
     // Settings
     Route::get('/settings', [Controller::class, 'index_settings'])->name('settings.index');
     Route::post('settings/update_permission', [UserController::class, 'update_permission'])->name('settings.update_permission');
+    Route::post('settings/get_tenant_info', [TenantController::class, 'get_tenant_info'])->name('settings.get_tenant_info');
+    Route::post('/settings/update_data', [TenantController::class, 'update_tenant_data'])->name('settings.update_tenant_data');
 
 
     Route::get('test', function(){
