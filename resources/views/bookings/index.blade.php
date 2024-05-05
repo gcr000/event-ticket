@@ -7,7 +7,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>PalermoEventi24</title>
+    <title>{{env('APP_NAME')}}</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
