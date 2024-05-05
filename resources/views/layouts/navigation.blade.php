@@ -17,16 +17,26 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
+                    @if(\App\Http\Controllers\Controller::checkPermission('lista_utenti'))
                     <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
                         {{ __('Utenti') }}
                     </x-nav-link>
+                    @endif
 
-                    <x-nav-link :href="route('locations.index')" :active="request()->routeIs('locations.*')">
-                        {{ __('Sedi') }}
-                    </x-nav-link>
+                    @if(\App\Http\Controllers\Controller::checkPermission('lista_sedi'))
+                        <x-nav-link :href="route('locations.index')" :active="request()->routeIs('locations.*')">
+                            {{ __('Sedi') }}
+                        </x-nav-link>
+                    @endif
 
-                    <x-nav-link :href="route('events.index')" :active="request()->routeIs('events.*')">
-                        {{ __('Eventi') }}
+                    @if(\App\Http\Controllers\Controller::checkPermission('lista_eventi'))
+                        <x-nav-link :href="route('events.index')" :active="request()->routeIs('events.*')">
+                            {{ __('Eventi') }}
+                        </x-nav-link>
+                    @endif
+
+                    <x-nav-link :href="route('settings.index')" :active="request()->routeIs('settings.*')">
+                        {{ __('Impostazioni') }}
                     </x-nav-link>
 
                 </div>

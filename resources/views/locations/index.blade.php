@@ -8,9 +8,11 @@
         <div>
             <h1>Sedi</h1>
         </div>
-        <div>
-            <a href="{{route('locations.create')}}">Crea Sede</a>
-        </div>
+        @if(\App\Http\Controllers\Controller::checkPermission('crea_sedi'))
+            <div>
+                <a href="{{route('locations.create')}}">Crea Sede</a>
+            </div>
+        @endif
     </div>
 
 
@@ -54,7 +56,9 @@
                         {{$location->email}}
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
-                        <a class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{env('APP_URL')}}/locations/{{$location->id}}/edit">Dettaglio Sede</a>
+                        @if(\App\Http\Controllers\Controller::checkPermission('dettaglio_sedi'))
+                            <a class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{env('APP_URL')}}/locations/{{$location->id}}/edit">Dettaglio Sede</a>
+                        @endif
                     </td>
                 </tr>
             @endforeach

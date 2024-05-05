@@ -16,6 +16,9 @@ class EventController extends Controller
 {
     public function index()
     {
+        if(!Controller::checkPermission('lista_eventi'))
+            return redirect()->route('dashboard');
+
         $events = Event::query();
 
         if(auth()->user()->role_id != 1)
@@ -34,6 +37,9 @@ class EventController extends Controller
 
     public function create()
     {
+        if(!Controller::checkPermission('crea_eventi'))
+            return redirect()->route('dashboard');
+
         return view('events.create',[
             'locations' => Location::query()->where('tenant_id', auth()->user()->tenant_id)->get(),
         ]);
@@ -41,6 +47,9 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
+        if(!Controller::checkPermission('crea_eventi'))
+            return redirect()->route('dashboard');
+
         if($request->singolo_giorno) {
             $datetime_from = $request->datetime_from . ' ' . $request->time_from;
             $datetime_to = $request->datetime_from . ' ' . $request->time_from;
@@ -89,6 +98,7 @@ class EventController extends Controller
             'ref_user_id' => $ref->id,
         ]);
 
+        self::customLog('Evento creato');
         return redirect()->route('events.index');
     }
 
@@ -97,6 +107,9 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
+        if(!Controller::checkPermission('dettaglio_eventi'))
+            return redirect()->route('dashboard');
+
         if(!self::checkSameTenant($event))
             return redirect()->route('events.index')->with('error', 'Accesso non autorizzato!');
 
@@ -109,29 +122,6 @@ class EventController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Event $event)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Event $event)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Event $event)
-    {
-        //
-    }
 
     public function booking($base64EventiId)
     {
@@ -242,6 +232,7 @@ class EventController extends Controller
 
             Mail::to($booking->email)->send(new BookingSendCodeMail($booking->otp, $event->name, $customer_name, $urlToEvent));
 
+            self::customLog('Codice prenotazione inviato a ' . $booking->email);
             return response()->json([
                 'phone_code' => $booking->otp,
                 'msg' => '',
@@ -342,6 +333,7 @@ class EventController extends Controller
 
         Mail::to($booking->email)->send(new BookingConfirmation($content));
 
+        self::customLog('Prenotazione confermata per ' . $booking->email);
         return response()->json([
             'status' => 'ok',
             'msg' => 'Prenotazione confermata',
@@ -417,8 +409,13 @@ class EventController extends Controller
 
     public function archivia_evento(Event $event)
     {
+        if(!Controller::checkPermission('archivia_eventi'))
+            return redirect()->route('dashboard');
+
         $event->is_archiviato = true;
         $event->save();
+
+        self::customLog('Evento archiviato');
         return response()->json(['message' => 'Evento archiviato', 'status' => 'ok']);
     }
 }

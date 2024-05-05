@@ -8,9 +8,11 @@
         <div>
             <h1 class="text-xl">Dati</h1>
         </div>
-        <div>
-            <a href="{{route('locations.index')}}">Elenco Sedi</a>
-        </div>
+        @if(\App\Http\Controllers\Controller::checkPermission('lista_sedi'))
+            <div>
+                <a href="{{route('locations.index')}}">Elenco Sedi</a>
+            </div>
+        @endif
     </div>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -90,10 +92,12 @@
                     </i>
                 </p>
 
-                <div class="mt-2 flex justify-end" id="crea_btn">
-                    <label for="" class=""></label>
-                    <x-secondary-button type="submit" class="mt-4">Aggiorna</x-secondary-button>
-                </div>
+                @if(\App\Http\Controllers\Controller::checkPermission('modifica_sedi'))
+                    <div class="mt-2 flex justify-end" id="crea_btn">
+                        <label for="" class=""></label>
+                        <x-secondary-button type="submit" class="mt-4">Aggiorna</x-secondary-button>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -110,7 +114,9 @@
                 <div class="basis-2/6">{{$event->description}}</div>
                 <div class="basis-1/6 text-center">{{$event->user->name}}</div>
                 <div class="basis-1/6 text-end">
-                    <a class="hover:text-blue-800" href="{{route('events.show', $event->id)}}">Dettaglio Evento</a>
+                    @if(\App\Http\Controllers\Controller::checkPermission('dettaglio_eventi'))
+                        <a class="hover:text-blue-800" href="{{route('events.show', $event->id)}}">Dettaglio Evento</a>
+                    @endif
                 </div>
             </div>
         @endforeach
@@ -140,7 +146,9 @@
                 let paragh_map = document.getElementById('paragh_map');
                 paragh_map.style.display = 'block';
                 let create_btn = document.getElementById('crea_btn');
-                create_btn.style.display = '';
+                if(create_btn)
+                    create_btn.style.display = '';
+
                 map = L.map('map').setView([latitudine, longitudine], 17);
                 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,

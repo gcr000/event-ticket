@@ -215,10 +215,12 @@
                 <h1>Utenti</h1>
             </div>
 
-            <span style="cursor: pointer" class="bg-gray-400 rounded-md px-4 py-2 hover:text-black hover:bg-orange-200 transition"
-                  onclick="openModal('modelConfirm')">
-            crea utente
-        </span>
+            @if(\App\Http\Controllers\Controller::checkPermission('crea_utenti'))
+            <span style="cursor: pointer"
+                      onclick="openModal('modelConfirm')">
+                Crea Utente
+            </span>
+            @endif
 
         </div>
 
@@ -262,15 +264,19 @@
                     </td>
                     @if($user->role_id !== 1)
                     <td class="px-6 py-4 whitespace-no-wrap text-end">
-                        @if(!$user->is_disabled)
-                            <span style="cursor: pointer; color: orange" onclick="manageUser('archiviare', {{$user->id}})" id="archivia_{{$user->id}}">Modifica</span> <br>
+                        @if(\App\Http\Controllers\Controller::checkPermission('modifica_utenti'))
+                            @if(!$user->is_disabled)
+                                <span style="cursor: pointer; color: orange" onclick="manageUser('archiviare', {{$user->id}})" id="archivia_{{$user->id}}">Modifica</span> <br>
+                            @endif
                         @endif
-                        <span style="cursor: pointer; color: @if($user->is_disabled) black @else red @endif"
-                              onclick="manageUser(@if($user->is_disabled) 'riattivare' @else 'disattivare' @endif, {{$user->id}})"
-                              id="elimina_{{$user->id}}"
-                        >
-                            @if($user->is_disabled) Abilita @else Disabilita @endif
-                        </span>
+                        @if(\App\Http\Controllers\Controller::checkPermission('gestisci_utenti'))
+                            <span style="cursor: pointer; color: @if($user->is_disabled) black @else red @endif"
+                                  onclick="manageUser(@if($user->is_disabled) 'riattivare' @else 'disattivare' @endif, {{$user->id}})"
+                                  id="elimina_{{$user->id}}"
+                            >
+                                @if($user->is_disabled) Abilita @else Disabilita @endif
+                            </span>
+                        @endif
                     </td>
                     @else
                         <td class="px-6 py-4 whitespace-no-wrap text-end">

@@ -13,6 +13,9 @@ class LocationController extends Controller
      */
     public function index()
     {
+        if(!Controller::checkPermission('lista_sedi'))
+            return redirect()->route('dashboard');
+
         $locations = Location::query();
 
         if(auth()->user()->role_id != 1)
@@ -29,6 +32,9 @@ class LocationController extends Controller
      */
     public function create()
     {
+        if(!Controller::checkPermission('crea_sedi'))
+            return redirect()->route('dashboard');
+
         return view('locations.create', [
             'users' => User::query()->where('tenant_id', auth()->user()->tenant_id)->get(),
         ]);
@@ -39,10 +45,14 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Controller::checkPermission('crea_sedi'))
+            return redirect()->route('dashboard');
+
         $loc = Location::create($request->all());
         $loc->tenant_id = auth()->user()->tenant_id;
         $loc->save();
 
+        self::customLog('Sede creata');
         return redirect()->route('locations.index');
     }
 
@@ -59,6 +69,9 @@ class LocationController extends Controller
      */
     public function edit(Location $location)
     {
+        if(!Controller::checkPermission('dettaglio_sedi'))
+            return redirect()->route('dashboard');
+
         if(!self::checkSameTenant($location))
             return redirect()->route('locations.index')->with('error', 'Accesso non autorizzato!');
 
@@ -73,10 +86,14 @@ class LocationController extends Controller
      */
     public function update(Request $request, Location $location)
     {
+        if(!Controller::checkPermission('modifica_sedi'))
+            return redirect()->route('dashboard');
+
         if(!self::checkSameTenant($location))
             return redirect()->route('locations.index')->with('error', 'Accesso non autorizzato!');;
 
         $location->update($request->all());
+        self::customLog('Sede modificata');
         return redirect()->route('locations.index');
     }
 

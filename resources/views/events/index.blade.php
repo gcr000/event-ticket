@@ -8,9 +8,11 @@
         <div>
             <h1>Eventi</h1>
         </div>
-        <div>
-            <a href="{{route('events.create')}}">Crea Evento</a>
-        </div>
+        @if(\App\Http\Controllers\Controller::checkPermission('crea_eventi'))
+            <div>
+                <a href="{{route('events.create')}}">Crea Evento</a>
+            </div>
+        @endif
     </div>
 
     <div class="flex flex-row justify-end mb-4">
@@ -51,11 +53,18 @@
             @foreach($events as $event)
                 <tr id="event_{{$event->id}}" @if($event->is_archiviato) style="color: lightgrey" @endif>
                     <td class="px-6 py-4 whitespace-no-wrap">
-                        <a @if($event->is_archiviato) style="text-decoration: none!important; color: black" @endif class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{route('events.show', $event->id)}}">
+                        @if(\App\Http\Controllers\Controller::checkPermission('dettaglio_eventi'))
+                            <a @if($event->is_archiviato) style="text-decoration: none!important; color: black" @endif class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{route('events.show', $event->id)}}">
+                                {{$event->name}}
+                            </a>
+                            @if(auth()->user()->role_id === 1)
+                                <br><small>Tenant: {{$event->tenant->name}}</small>
+                            @endif
+                        @else
                             {{$event->name}}
-                        </a>
-                        @if(auth()->user()->role_id === 1)
-                            <br><small>Tenant: {{$event->tenant->name}}</small>
+                            @if(auth()->user()->role_id === 1)
+                                <br><small>Tenant: {{$event->tenant->name}}</small>
+                            @endif
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
@@ -130,7 +139,9 @@
                         @if(!$event->is_archiviato)
                             @php($base64Id = \App\Http\Controllers\Controller::encryptId($event->id))
                             <a href="{{env('APP_URL') . '/bookings/' . $base64Id}}">Link prenotazione</a> <br>
-                            <span style="cursor: pointer; color: orange" onclick="manageEvent('archiviare', {{$event->id}})" id="archivia_{{$event->id}}">Archivia</span> <br>
+                            @if(\App\Http\Controllers\Controller::checkPermission('archivia_eventi'))
+                                <span style="cursor: pointer; color: orange" onclick="manageEvent('archiviare', {{$event->id}})" id="archivia_{{$event->id}}">Archivia</span> <br>
+                            @endif
                         @endif
                     </td>
                 </tr>

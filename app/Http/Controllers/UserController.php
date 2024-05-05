@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
+use App\Models\PermissionUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,6 +15,9 @@ class UserController extends Controller
      */
     public function index()
     {
+        if(!Controller::checkPermission('lista_utenti'))
+            return redirect()->route('dashboard');
+
         $users = User::query();
 
         if(auth()->user()->role_id != 1)
@@ -20,16 +25,8 @@ class UserController extends Controller
 
 
         return view('users.index', [
-            'users' => $users->get()
+            'users' => $users->orderBy('tenant_id')->orderBy('name')->get()
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -37,6 +34,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
+        if(!Controller::checkPermission('crea_utenti'))
+            return redirect()->route('dashboard');
 
         if($request->role_id != 1) {
 
@@ -49,23 +49,9 @@ class UserController extends Controller
             $user->tenant_id = auth()->user()->tenant_id;
             $user->save();
         }
+
+        self::customLog('Nuovo utente creato');
         return redirect()->route('users.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -73,6 +59,9 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if(!Controller::checkPermission('modifica_utenti'))
+            return redirect()->route('dashboard');
+
         $user = User::find($id);
 
         if($user->email !== $request->email && User::query()->where('email', $request->email)->exists())
@@ -92,23 +81,53 @@ class UserController extends Controller
         ]);
 
         if($user->role_id !== 1) $user->save();
+
+        self::customLog('Utente modificato');
         return response()->json($user);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 
     public function disable_user(string $id)
     {
+        if(!Controller::checkPermission('gestisci_utenti'))
+            return redirect()->route('dashboard');
+
         $user = User::find($id);
+
         if($user->role_id != 1)
-        $user->is_disabled = !$user->is_disabled;
-        if($user->role_id !== 1) $user->save();
+            $user->is_disabled = !$user->is_disabled;
+
+        if($user->role_id !== 1)
+            $user->save();
+
+        self::customLog('Utente disabilitato');
         return response()->json($user);
+    }
+
+    public function update_permission(Request $request){
+
+        /*if(!Controller::checkPermission('modifica_permessi'))
+            return redirect()->route('dashboard');*/
+
+        $user = User::find($request->user_id);
+        $permission = Permission::find($request->permission_id);
+
+        $permission_user = PermissionUser::query()
+            ->where('user_id', $user->id)
+            ->where('permission_id', $permission->id)
+            ->first();
+
+        if($permission_user)
+            $permission_user->delete();
+        else {
+            $permission_user = new PermissionUser();
+            $permission_user->user_id = $user->id;
+            $permission_user->permission_id = $permission->id;
+            $permission_user->tenant_id = $user->tenant_id;
+            $permission_user->save();
+        }
+
+        self::customLog('Permesso modificato');
+        return response()->json($permission_user);
     }
 }

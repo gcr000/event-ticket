@@ -1,6 +1,7 @@
 <?php
 
     use App\Http\Controllers\BookingController;
+    use App\Http\Controllers\Controller;
     use App\Http\Controllers\EventController;
     use App\Http\Controllers\LocationController;
     use App\Http\Controllers\ProfileController;
@@ -26,7 +27,7 @@ Route::get('/', function () {
 })->middleware(['auth', 'verified']);
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect('/');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -62,6 +63,11 @@ Route::middleware('auth')->group(function () {
     Route::post('locations/create', [LocationController::class, 'store'])->name('locations.store');
     Route::get('locations/{location}/edit', [LocationController::class, 'edit'])->name('locations.edit');
     Route::post('locations/{location}', [LocationController::class, 'update'])->name('locations.update');
+
+    // Settings
+    Route::get('/settings', [Controller::class, 'index_settings'])->name('settings.index');
+    Route::post('settings/update_permission', [UserController::class, 'update_permission'])->name('settings.update_permission');
+
 
     Route::get('test', function(){
 
