@@ -5,15 +5,19 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                    </a>
+                    <img src="/logo.png" alt="" style="width: 10%; cursor: pointer" onclick="goToHomePage()">
                 </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <script>
+                    function goToHomePage() {
+                        window.location.href = "/";
+                    }
+                </script>
 
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <!-- Navigation Links -->
+                <div style="margin-left: -400px" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard') || request()->is('/')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
@@ -35,9 +39,11 @@
                         </x-nav-link>
                     @endif
 
-                    <x-nav-link :href="route('settings.index')" :active="request()->routeIs('settings.*')">
-                        {{ __('Impostazioni') }}
-                    </x-nav-link>
+                    @if(auth()->user()->role_id === 1 OR auth()->user()->role_id === 2)
+                        <x-nav-link :href="route('settings.index')" :active="request()->routeIs('settings.*')">
+                            {{ __('Impostazioni') }}
+                        </x-nav-link>
+                    @endif
 
                 </div>
             </div>

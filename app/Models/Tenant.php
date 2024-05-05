@@ -21,10 +21,22 @@ class Tenant extends Model
     }
 
     public function events() {
-        return $this->hasMany(Event::class);
+        return $this->hasMany(Event::class)->orderBy('datetime_from', 'desc');
     }
 
     public function permissionroles() {
         return $this->hasMany(PermissionRole::class);
+    }
+
+    public function bookings() {
+        return $this->hasMany(Booking::class)->orderBy('bookings.created_at', 'desc');
+    }
+
+    public function last_bookings() {
+        return $this->hasMany(Booking::class)->orderBy('bookings.created_at', 'desc')->limit(10);
+    }
+
+    public function booking_details() {
+        return $this->hasMany(BookingDetail::class)->orderBy('booking_details.created_at', 'desc');
     }
 }

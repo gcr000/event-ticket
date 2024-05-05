@@ -75,7 +75,7 @@
                                         class="block appearance-none w-full bg-gray-200 border border-blue-500 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                         id="grid-state">
                                     <option value="2">Admin</option>
-                                    <option value="3">Manager</option>
+                                    {{--<option value="3">Manager</option>--}}
                                     <option value="4">User</option>
                                 </select>
                             </div>

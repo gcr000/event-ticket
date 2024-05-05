@@ -57,7 +57,7 @@
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap">
                         @if(\App\Http\Controllers\Controller::checkPermission('dettaglio_sedi'))
-                            <a class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{env('APP_URL')}}/locations/{{$location->id}}/edit">Dettaglio Sede</a>
+                            <a class="text-decoration-none text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{env('APP_URL')}}/locations/{{$location->id}}/edit">Dettaglio Sede</a>
                         @endif
                     </td>
                 </tr>

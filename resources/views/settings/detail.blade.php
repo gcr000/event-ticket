@@ -12,19 +12,21 @@
                 <div style="width: 300px">&nbsp;</div>
                 @foreach($tenant->users as $user)
                     <div class="me-4" style="width: 150px; text-align: center">
-                        {{$user->name}}
+                        <p style="margin-bottom: -35px">{{$user->name}}</p> <br> <span><small>({{$user->role->name}})</small></span>
                     </div>
                 @endforeach
             </div>
             @foreach($permissions as $permission)
-                <div class="flex flex-row mb1">
+                <div class="flex flex-row mb-1 mt-1">
                     <div style="width: 300px">
-                        {{$permission->name}}
+                        <p style="margin-bottom: -10px">{{$permission->name}}</p>
+                        <small><i>{{$permission->description}}</i></small>
                     </div>
                     @foreach($tenant->users as $user)
                         <div class="me-4" style="width: 150px; text-align: center">
                             <input
                                 type="checkbox"
+                                style="margin-top: 10px"
                                 id="id_{{$user->id}}_{{$permission->id}}"
                                 value="{{$permission->id}}"
                                 onchange="updatePermission({{$user->id}}, {{$permission->id}})"

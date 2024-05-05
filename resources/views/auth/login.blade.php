@@ -73,23 +73,23 @@
                     <div class="card-body p-3 p-md-4 p-xl-5">
                         <div class="row">
                             <div class="col-12">
-                                <div class="mb-2" style="border-radius: 5px; padding: 10px">
-                                    <h3 style="color: #0C6DFD" class="text-center">Login</h3>
-                                    <h6 style="color: #0C6DFD" class="text-center">Pannello di amministrazione</h6>
+                                <div class="mb-2 text-center" style="border-radius: 5px; padding: 10px">
+                                    <img src="logo.png" alt="" style="width: 20%; cursor: pointer">
                                 </div>
                             </div>
                         </div>
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="row gy-3 gy-md-4 overflow-hidden">
+                                <h2 class="text-center mb-5">Login Page - Amministrazione</h2>
                                 <div class="col-12">
                                     <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                                    <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Inserisci la tua email" required>
                                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control" name="password" id="password" value="" required>
+                                    <input type="password" class="form-control" name="password" id="password" placeholder="Inserisci la tua password" value="" required>
                                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                 </div>
 
@@ -104,7 +104,7 @@
                             <div class="col-12">
                                 <hr class="mt-5 mb-4 border-secondary-subtle">
                                 <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
-                                    <a href="#!" class="link-secondary text-decoration-none">Hai dimenticato la password?</a>
+                                    <a href="{{ route('password.request') }}" class="link-primary text-decoration-none">Hai dimenticato la password?</a>
                                 </div>
                             </div>
                         </div>

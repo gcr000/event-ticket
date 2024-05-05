@@ -54,7 +54,7 @@
                 <tr id="event_{{$event->id}}" @if($event->is_archiviato) style="color: lightgrey" @endif>
                     <td class="px-6 py-4 whitespace-no-wrap">
                         @if(\App\Http\Controllers\Controller::checkPermission('dettaglio_eventi'))
-                            <a @if($event->is_archiviato) style="text-decoration: none!important; color: black" @endif class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{route('events.show', $event->id)}}">
+                            <a @if($event->is_archiviato) style="text-decoration: none!important; color: black" @endif class="text-decoration-none text-blue-600 hover:text-blue-800 visited:text-purple-600" href="{{route('events.show', $event->id)}}">
                                 {{$event->name}}
                             </a>
                             @if(auth()->user()->role_id === 1)
