@@ -82,7 +82,7 @@
                                 <div class="col-12 mt-5">
                                     <div class="card">
                                         <div class="card-body text-center">
-                                            <img src="{{ asset('ok.svg') }}" alt="Prenotazione completata con successo" class="img-fluid" style="width: 60%">
+                                            <img src="{{ asset('ok.svg') }}" alt="Prenotazione completata con successo" class="img-fluid" style="width: 30%">
                                             <h2 class="card-title">Prenotazione completata con successo!</h2>
                                             <p class="card-text">Ti ringraziamo per la tua prenotazione. <br> I tuoi biglietti verranno inviati via email.</p>
                                             <p class="card-text">Per eventuali domande, contattaci a <a href="mailto:{{$tenant->email}}">{{$tenant->email}}</a>.</p>
