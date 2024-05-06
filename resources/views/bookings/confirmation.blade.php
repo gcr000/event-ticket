@@ -191,7 +191,8 @@
                     document.getElementById('container').style.opacity = '1';
                     document.getElementById('loader').style.display = 'none';
 
-                    alert('Codice non valido');
+                    let msg = data.message ? data.message : 'Codice non valido';
+                    customAlert('Errore', msg, 'error');
                     let ele = document.querySelectorAll('input');
                     ele.forEach((el)=>{
                         el.value = '';

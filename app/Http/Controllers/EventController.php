@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Models\Event;
 use App\Models\Location;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -299,10 +300,22 @@ class EventController extends Controller
         $booking = Booking::find($request->booking_id);
 
         if(!$booking)
-            return response()->json(['message' => 'Booking not found', 'status' => 'ko'], 404);
+            return response()->json(['message' => 'Prenotazione non trovata', 'status' => 'ko'], 404);
 
         if($booking->otp != $request->otp)
-            return response()->json(['message' => 'Invalid OTP', 'status' => 'ko'], 400);
+            return response()->json(['message' => 'OTP non valido', 'status' => 'ko'], 400);
+
+
+        // controllo se il booking è già stato confermato
+        if($booking->is_confirmed)
+            return response()->json(['message' => 'Prenotazione già confermata', 'status' => 'ko'], 400);
+
+        // controllo la validità dell'otp (10 minuti)
+        $booking_created_at = Carbon::parse($booking->created_at);
+        $now = Carbon::now();
+        $diff = $now->diffInMinutes($booking_created_at);
+        if($diff > 1)
+            return response()->json(['message' => 'OTP scaduto', 'status' => 'ko'], 400);
 
         $booking->is_confirmed = true;
         $booking->confirmed_at = date('Y-m-d H:i:s');
