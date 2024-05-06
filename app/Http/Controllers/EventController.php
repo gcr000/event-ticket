@@ -171,7 +171,7 @@ class EventController extends Controller
             return response()->json(['message' => 'Posti esauriti', 'status' => 'ko'], 400);*/
 
         // se la mail è già stata usata per una prenotazione per lo stesso evento
-        if(Booking::where('email', $first_person['email'])->where('event_id', $event->id)->first())
+        if(Booking::where('email', $first_person['email'])->where('event_id', $event->id)->where('is_confirmed',1)->first())
             return response()->json(['message' => 'Email già utilizzata per questo evento', 'status' => 'ko'], 400);
 
         // se il phone_number è già stato usato per una prenotazione per lo stesso evento
@@ -282,6 +282,7 @@ class EventController extends Controller
     {
         $booking_id = request()->route('booking_id');
         $booking = Booking::find($booking_id);
+        $event = Event::find($booking->event_id);
 
         return view('bookings.confirmation',[
             'phone_code' => $booking->otp,
@@ -289,6 +290,7 @@ class EventController extends Controller
             'msg' => '',
             'status' => $booking->is_confirmed ? 'Prenotazione confermata' : 'In attesa di conferma',
             'data_richiesta' => date('d/m/Y H:i', strtotime($booking->created_at)),
+            'event' => $event,
         ]);
     }
 
