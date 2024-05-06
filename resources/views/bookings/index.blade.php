@@ -545,7 +545,7 @@
             if(from_payment){
                 //
             }else{
-                window.location.href = '{{env('APP_URL')}}/bookings/confirmation/' + result.booking.id;
+                window.location.href = '{{env('APP_URL')}}/bookings/confirmation/' + result.confirmation_url;
             }
         }else if(result.status === 'ko'){
             document.getElementById('hero').style.opacity = '1';

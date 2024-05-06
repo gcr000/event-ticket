@@ -239,7 +239,8 @@ class EventController extends Controller
                 'msg' => '',
                 'data_richiesta' => date('d/m/Y H:i'),
                 'status' => 'ok',
-                'booking' => $booking
+                'booking' => $booking,
+                'confirmation_url' => Controller::encryptId($booking->id),
             ]);
         }
 
@@ -281,7 +282,9 @@ class EventController extends Controller
 
     public function confirmation()
     {
-        $booking_id = request()->route('booking_id');
+        $booking_id = Controller::decryptId(request()->route('base64booking_id'));
+        info($booking_id);
+
         $booking = Booking::find($booking_id);
         $event = Event::find($booking->event_id);
 
@@ -314,7 +317,7 @@ class EventController extends Controller
         $booking_created_at = Carbon::parse($booking->created_at);
         $now = Carbon::now();
         $diff = $now->diffInMinutes($booking_created_at);
-        if($diff > 1)
+        if($diff > 10)
             return response()->json(['message' => 'OTP scaduto', 'status' => 'ko'], 400);
 
         $booking->is_confirmed = true;
