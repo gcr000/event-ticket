@@ -79,7 +79,7 @@
                         @php($tenant = $booking->tenant)
                         <div class="container">
                             <div class="row justify-content-center">
-                                <div class="col-12 mt-5">
+                                <div class="col-12">
                                     <div class="card">
                                         <div class="card-body text-center">
                                             <img src="{{ asset('ok.svg') }}" alt="Prenotazione completata con successo" class="img-fluid" style="width: 30%">
