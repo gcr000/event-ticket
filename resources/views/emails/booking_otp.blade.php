@@ -358,7 +358,9 @@
                                 <div class="text" style="padding: 0 2.5em; text-align: center;">
                                     <h2 style="color: #60129A">Codice OTP</h2> <br>
                                     <h3 style="color: #9A0F68">Ciao {{ucfirst($customer_name)}}, il tuo codice di verifica è <br><b>{{$otp}}</b><br> </h3>
-                                    {{--<p><a href="#" class="btn btn-primary">Yes! Subscribe Me</a></p>--}}
+                                    <h4 style="color: #9A0F68">(Validità: <b>10 minuti</b>)</h4>
+                                    <hr>
+                                    <h3 style="color: #60129A">{{strtoupper($event_name)}}</h3>
                                 </div>
                             </td>
                         </tr>

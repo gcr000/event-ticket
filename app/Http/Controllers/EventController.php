@@ -240,6 +240,7 @@ class EventController extends Controller
                 'data_richiesta' => date('d/m/Y H:i'),
                 'status' => 'ok',
                 'booking' => $booking,
+                'event' => $event,
                 'confirmation_url' => Controller::encryptId($booking->id),
             ]);
         }
@@ -283,8 +284,6 @@ class EventController extends Controller
     public function confirmation()
     {
         $booking_id = Controller::decryptId(request()->route('base64booking_id'));
-        info($booking_id);
-
         $booking = Booking::find($booking_id);
         $event = Event::find($booking->event_id);
 
