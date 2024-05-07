@@ -5,6 +5,7 @@
     use App\Http\Controllers\EventController;
     use App\Http\Controllers\LocationController;
     use App\Http\Controllers\ProfileController;
+    use App\Http\Controllers\ScanController;
     use App\Http\Controllers\TenantController;
     use App\Http\Controllers\UserController;
     use App\Mail\BookingConfirmation;
@@ -71,6 +72,8 @@ Route::middleware('auth')->group(function () {
     Route::post('settings/get_tenant_info', [TenantController::class, 'get_tenant_info'])->name('settings.get_tenant_info');
     Route::post('/settings/update_data', [TenantController::class, 'update_tenant_data'])->name('settings.update_tenant_data');
 
+    Route::get('scan', [ScanController::class, 'index'])->name('scan.index');
+    Route::post('scan', [ScanController::class, 'scan'])->name('scan.scan');
 
     Route::get('test', function(){
 

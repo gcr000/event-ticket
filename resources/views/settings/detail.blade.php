@@ -23,18 +23,20 @@
                         <small><i>{{$permission->description}}</i></small>
                     </div>
                     @foreach($tenant->users as $user)
-                        <div class="me-4" style="width: 150px; text-align: center">
-                            <input
-                                type="checkbox"
-                                style="margin-top: 10px"
-                                id="id_{{$user->id}}_{{$permission->id}}"
-                                value="{{$permission->id}}"
-                                onchange="updatePermission({{$user->id}}, {{$permission->id}})"
-                                @if(\App\Models\PermissionUser::where('user_id', $user->id)->where('permission_id', $permission->id)->exists())
-                                    checked
-                                @endif
-                            >
-                        </div>
+
+                            <div class="me-4" style="width: 150px; text-align: center">
+                                <input
+                                    type="checkbox"
+                                    style="margin-top: 10px"
+                                    id="id_{{$user->id}}_{{$permission->id}}"
+                                    value="{{$permission->id}}"
+                                    onchange="updatePermission({{$user->id}}, {{$permission->id}})"
+                                    @if(\App\Models\PermissionUser::where('user_id', $user->id)->where('permission_id', $permission->id)->exists())
+                                        checked
+                                    @endif
+                                >
+                            </div>
+
                     @endforeach
                 </div>
                 @if(!$loop->last)

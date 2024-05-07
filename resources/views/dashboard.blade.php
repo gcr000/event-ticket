@@ -14,8 +14,8 @@
         <div class="mt-6 border-t border-gray-100">
             <dl class="divide-y divide-gray-100">
                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt class="text-sm font-medium leading-6 text-gray-900">Nome</dt>
-                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{$tenant->name}}</dd>
+                    <dt class="text-sm font-medium leading-6 text-gray-900 sm:w-1/4">Nome</dt>
+                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:w-3/4 sm:mt-0">{{$tenant->name}}</dd>
                 </div>
                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt class="text-sm font-medium leading-6 text-gray-900">Dati azienda</dt>
@@ -25,7 +25,7 @@
                     <dt class="text-sm font-medium leading-6 text-gray-900">Utenti</dt>
                     <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                         @foreach($tenant->users as $user)
-                            <b>{{$user->name}}</b> <small>({{$user->email}})</small> @if(!$loop->last), @endif
+                            <b>{{$user->name}}</b> <small>({{$user->role->name}})</small> @if(!$loop->last), @endif
                         @endforeach
                     </dd>
                 </div>
