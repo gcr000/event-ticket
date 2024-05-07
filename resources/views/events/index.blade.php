@@ -4,7 +4,7 @@
 
 <x-app-layout>
 
-    <div class="flex flex-row justify-between mb-4">
+    <div class="flex flex-row justify-between mb-2">
         <div>
             <h1>Eventi</h1>
         </div>
@@ -40,6 +40,9 @@
             </th>
             <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                 Data e Sede
+            </th>
+            <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+
             </th>
             <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
 
@@ -144,6 +147,11 @@
                             @endif
                         @endif
                     </td>
+                    <td class="px-6 py-4 whitespace-no-wrap">
+                        @if(\App\Http\Controllers\Controller::checkPermission('scan_eventi'))
+                            <span style="cursor: pointer" onclick="goToScan('{{$event->id}}')" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Scan</span>
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -197,6 +205,10 @@
             } else {
                 window.location.href = '{{env('APP_URL')}}/events?type=' + type;
             }
+        }
+
+        function goToScan(eventId){
+            window.location.href = '{{env('APP_URL')}}/scan/' + eventId;
         }
 
     </script>

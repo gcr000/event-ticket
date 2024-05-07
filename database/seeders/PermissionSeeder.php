@@ -28,7 +28,8 @@ class PermissionSeeder extends Seeder
             'lista_eventi' =>'utente che può vedere la lista degli eventi',
             'crea_eventi' =>'utente che può creare un nuovo evento',
             'dettaglio_eventi' =>'utente che può vedere il dettaglio di un evento',
-            'archivia_eventi' =>'utente che può archiviare gli eventi'
+            'archivia_eventi' =>'utente che può archiviare gli eventi',
+            'scan_eventi' =>'utente che può scansionare i biglietti degli eventi',
         ];
 
 

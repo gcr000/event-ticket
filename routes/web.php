@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::post('settings/get_tenant_info', [TenantController::class, 'get_tenant_info'])->name('settings.get_tenant_info');
     Route::post('/settings/update_data', [TenantController::class, 'update_tenant_data'])->name('settings.update_tenant_data');
 
-    Route::get('scan', [ScanController::class, 'index'])->name('scan.index');
+    Route::get('scan/{eventId}', [ScanController::class, 'index'])->name('scan.index');
     Route::post('scan', [ScanController::class, 'scan'])->name('scan.scan');
 
     Route::get('test', function(){

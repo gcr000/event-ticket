@@ -49,10 +49,27 @@
                             'X-CSRF-TOKEN' : '{{ csrf_token() }}'
                         },
                         data: {
-                            qr_code_data: code.data
+                            qr_code_data: code.data,
+                            event_id: '{{ $event_id }}'
                         },
                         success: function(response) {
-                            console.log(response);
+
+                            Swal.fire({
+                                title: response.title,
+                                icon: response.status,
+                                html: response.message,
+                                showCloseButton: false,
+                                showConfirmButton: false,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                allowEnterKey: false,
+                                timer: 2000,
+                                timerProgressBar: true
+                            });
+
+                            setTimeout(() => {
+                                qrCodeRead = false;
+                            }, 2000);
                         },
                         error: function(xhr, status, error) {
                             console.error(error);
