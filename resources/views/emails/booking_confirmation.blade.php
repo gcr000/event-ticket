@@ -382,11 +382,20 @@
                 <tr>
                     <td valign="middle" class="hero bg_white" style="">
                         <div id="qrcode_img">
-                            @php($from = [255, 0, 0])
+                            {{--@php($from = [255, 0, 0])
                             @php($to = [0, 0, 255])
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{$code['phone_number']}}" alt="">
-                            <br> &nbsp; <br>
-                            <h3 style="margin-top: -20px;">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{$code['phone_number']}}" alt="">
+                            <h3>
+                                <span style="color: #871179">{{$code['name']}}</span> - <span style="color: #370EC0">{{$code['phone_number']}}</span>
+                            </h3> <br>--}}
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{$code['phone_number']}}" alt="">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="middle" class="hero bg_white" style="">
+                        <div id="qrcode_img">
+                            <h3>
                                 <span style="color: #871179">{{$code['name']}}</span> - <span style="color: #370EC0">{{$code['phone_number']}}</span>
                             </h3> <br>
                         </div>
