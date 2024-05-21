@@ -56,17 +56,24 @@
 
                 <div class="mt-3 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-9">
 
-                    <div class="sm:col-span-4">
+                    <div class="sm:col-span-2">
                         <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
                         <div class="mt-2">
                             <input type="text" value="{{$tenant->email}}" name="first-name" id="email" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                         </div>
                     </div>
 
-                    <div class="sm:col-span-4">
+                    <div class="sm:col-span-2">
                         <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Numero di telefono</label>
                         <div class="mt-2">
                             <input type="text" value="{{$tenant->phone}}" name="last-name" id="phone" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-4">
+                        <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Paypal Client ID</label>
+                        <div class="mt-2">
+                            <input @if(auth()->user()->role_id != 1) disabled readonly @endif type="text" value="{{$tenant->paypal_client_id}}" name="paypal_client_id" id="paypal_client_id" autocomplete="paypal_client_id" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                         </div>
                     </div>
 
@@ -90,6 +97,7 @@
         let data = {
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
+            paypal_client_id: document.getElementById('paypal_client_id').value,
             tenant_id: '{{$tenant->id}}'
         };
 

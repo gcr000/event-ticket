@@ -99,9 +99,14 @@ class TenantController extends Controller
 
         $tenant->email = $request->email;
         $tenant->phone = $request->phone;
+
+        if(auth()->user()->role_id == 1)
+            $tenant->paypal_client_id = $request->paypal_client_id;
+
         $tenant->save();
 
         self::customLog('Dati tenant aggiornati');
+
         return response()->json([
             'message' => 'Tenant data updated',
             'tenant' => $tenant

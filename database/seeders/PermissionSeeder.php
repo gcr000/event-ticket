@@ -30,10 +30,17 @@ class PermissionSeeder extends Seeder
             'dettaglio_eventi' =>'utente che può vedere il dettaglio di un evento',
             'archivia_eventi' =>'utente che può archiviare gli eventi',
             'scan_eventi' =>'utente che può scansionare i biglietti degli eventi',
+
+            'modifica_permessi' =>'utente che può modificare i permessi degli altri utenti',
+            'modifica_impostazioni' =>'utente che può modificare i dati della propria istanza',
         ];
 
 
         foreach ($permissions_array as $name => $description) {
+            // se il permesso esiste già non lo inserisco
+            if (DB::table('permissions')->where('name', $name)->exists()) {
+                continue;
+            }
             DB::table('permissions')->insert([
                 'name' => $name,
                 'description' => $description,
