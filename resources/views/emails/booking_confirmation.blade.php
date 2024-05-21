@@ -385,7 +385,7 @@
                             @php($from = [255, 0, 0])
                             @php($to = [0, 0, 255])
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{$code['phone_number']}}" alt="">
-                            <br>
+                            <br> &nbsp; <br>
                             <h3 style="margin-top: -20px;">
                                 <span style="color: #871179">{{$code['name']}}</span> - <span style="color: #370EC0">{{$code['phone_number']}}</span>
                             </h3> <br>
