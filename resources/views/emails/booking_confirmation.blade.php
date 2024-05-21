@@ -384,7 +384,8 @@
                         <div id="qrcode_img">
                             @php($from = [255, 0, 0])
                             @php($to = [0, 0, 255])
-                            {!! QrCode::margin(1)->size(250)->generate($code['booking_code']); !!} <br>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{$code['phone_number']}}" alt="">
+                            <br>
                             <h3 style="margin-top: -20px;">
                                 <span style="color: #871179">{{$code['name']}}</span> - <span style="color: #370EC0">{{$code['phone_number']}}</span>
                             </h3> <br>
