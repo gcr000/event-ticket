@@ -317,7 +317,7 @@
     </style>
 
     <style>
-        #qrcode_img {
+        .qrcode_img {
             width: 100%;
             margin: 10px;
             display: flex;
@@ -380,8 +380,8 @@
             </tr>
             @foreach($content['codes'] as $k => $code)
                 <tr>
-                    <td valign="middle" class="hero bg_white" style="">
-                        <div id="qrcode_img">
+                    <td valign="middle" class="hero bg_white" style="text-align: center; padding: 0 2.5em;">
+                        <div class="qrcode_img">
                             {{--@php($from = [255, 0, 0])
                             @php($to = [0, 0, 255])
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{$code['phone_number']}}" alt="">
@@ -393,8 +393,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td valign="middle" class="hero bg_white" style="">
-                        <div id="qrcode_img">
+                    <td valign="middle" class="hero bg_white" style="text-align: center; padding: 0 2.5em;">
+                        <div class="qrcode_img">
                             <h3>
                                 <span style="color: #871179">{{$code['name']}}</span> - <span style="color: #370EC0">{{$code['phone_number']}}</span>
                             </h3> <br>
