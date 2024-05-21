@@ -384,7 +384,7 @@
                         <div id="qrcode_img">
                             @php($from = [255, 0, 0])
                             @php($to = [0, 0, 255])
-                            {!! QrCode::style('round')->eye('circle')->gradient($from[0], $from[1], $from[2], $to[0], $to[1], $to[2], 'diagonal')->margin(1)->size(250)->generate($code['booking_code']); !!} <br>
+                            {!! QrCode::margin(1)->size(250)->generate($code['booking_code']); !!} <br>
                             <h3 style="margin-top: -20px;">
                                 <span style="color: #871179">{{$code['name']}}</span> - <span style="color: #370EC0">{{$code['phone_number']}}</span>
                             </h3> <br>
