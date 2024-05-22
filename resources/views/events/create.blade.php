@@ -269,9 +269,11 @@
             if (value === '1') {
                 max_partecipanti.classList.remove('bg-gray-300');
                 max_partecipanti.readOnly = false;
+                max_partecipanti.setAttribute('required', true);
             } else {
                 max_partecipanti.classList.add('bg-gray-300');
                 max_partecipanti.readOnly = true;
+                max_partecipanti.removeAttribute('required');
             }
         }
 

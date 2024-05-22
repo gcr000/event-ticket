@@ -51,6 +51,17 @@ class EventController extends Controller
         if(!Controller::checkPermission('crea_eventi'))
             return redirect()->route('dashboard');
 
+        // controllo che per questo mese non siano già stati creati gli eventi massimi consentiti per la tenant
+        $eventsMonthCount = Event::query()
+            ->where('tenant_id', auth()->user()->tenant_id)
+            ->whereMonth('datetime_from', now())
+            ->where('is_archiviato', false)
+            ->count();
+
+        if($eventsMonthCount >= auth()->user()->tenant->max_events_count)
+            return redirect()->route('events.create')->with('error', 'Hai raggiunto il numero massimo di eventi per questo mese');
+
+
         if($request->singolo_giorno) {
             $datetime_from = $request->datetime_from . ' ' . $request->time_from;
             $datetime_to = $request->datetime_from . ' ' . $request->time_from;

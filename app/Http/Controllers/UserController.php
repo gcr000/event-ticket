@@ -38,6 +38,22 @@ class UserController extends Controller
         if(!Controller::checkPermission('crea_utenti'))
             return redirect()->route('dashboard');
 
+        // controllo se l'email è già in uso
+        if(User::query()
+            ->where('is_disabled', 0)
+            ->where('tenant_id', auth()->user()->tenant_id)
+            ->where('email', $request->email_create)
+            ->exists()
+        )
+            return redirect()->route('users.index')->with('error', 'Email già in uso, utente non creato');
+
+        // controllo se il numero massimo di utenti per tenant è stato raggiunto
+        if(User::query()
+                ->where('is_disabled', 0)
+                ->where('tenant_id', auth()->user()->tenant_id)->count() >= auth()->user()->tenant->max_users_count
+        )
+            return redirect()->route('users.index')->with('error', 'Numero massimo di utenti raggiunto, utente non creato');
+
         if($request->role_id != 1) {
 
             $user = new User();
@@ -94,14 +110,30 @@ class UserController extends Controller
 
         $user = User::find($id);
 
+        // sto abilitando, controllo il numero massimo di utenti
+        if($user->is_disabled && User::query()
+                ->where('is_disabled', 0)
+                ->where('tenant_id', auth()->user()->tenant_id)->count() >= auth()->user()->tenant->max_users_count
+        ) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Numero massimo di utenti raggiunto'
+            ], 400);
+        }
+
+
         if($user->role_id != 1)
             $user->is_disabled = !$user->is_disabled;
+
 
         if($user->role_id !== 1)
             $user->save();
 
         self::customLog('Utente disabilitato');
-        return response()->json($user);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Utente gestito con successo'
+        ], 200);
     }
 
     public function update_permission(Request $request){

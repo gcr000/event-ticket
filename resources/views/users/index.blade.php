@@ -331,8 +331,15 @@
             })
             .then(response => response.json())
             .then(data => {
-                window.location.reload();
+                if(data.status == 'error'){
+                    customAlert('Errore', data.message, 'error');
+                }
+                else
+                    window.location.reload();
             })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 
 
 
