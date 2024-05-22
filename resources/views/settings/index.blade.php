@@ -127,7 +127,10 @@
             })
                 .then(response => response.json())
                 .then(data => {
-
+                    if(data.message == 'Unauthorized'){
+                        alert('Operazione non concessa, utente non autorizzato');
+                        window.location.reload();
+                    }
                 })
                 .catch((error) => {
                     console.error('Error:', error);

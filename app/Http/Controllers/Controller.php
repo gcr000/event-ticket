@@ -17,7 +17,7 @@ class Controller extends BaseController
 
     static function checkPermission($permission_name) {
 
-        if(auth()->user()->role_id == 1)
+        if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
             return true;
 
         $permission = Permission::query()
@@ -31,6 +31,7 @@ class Controller extends BaseController
             ->where('user_id', auth()->user()->id)
             ->where('permission_id', $permission->id)
             ->first();
+
 
         if($permission_user)
             return true;

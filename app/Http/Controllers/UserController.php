@@ -106,8 +106,8 @@ class UserController extends Controller
 
     public function update_permission(Request $request){
 
-        /*if(!Controller::checkPermission('modifica_permessi'))
-            return redirect()->route('dashboard');*/
+        if(!Controller::checkPermission('modifica_permessi'))
+            return response()->json(['message' => 'Unauthorized'], 401);
 
         $user = User::find($request->user_id);
         $permission = Permission::find($request->permission_id);

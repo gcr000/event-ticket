@@ -1,6 +1,11 @@
 
 <h3 style="font-weight: 900;">Elenco Permessi</h3>
-<p class="mt-1 text-sm leading-6 text-gray-600" style="margin-bottom: 20px">Lista dei permessi relativi ai singoli utenti</p>
+<p class="text-sm leading-6 text-gray-600" style="margin-bottom: 20px">
+    <span style="color: red">
+        Gli utenti di ruolo <b>admin</b> non sono soggetti a questa gestione di permessi: per loro tutte le operazioni sono tutte concesse.
+    </span>
+</p>
+
 
 <div class="card border mb-3 p-2" style="border-radius: 5px">
     {{--<div class="card-header mb-5">
@@ -9,8 +14,11 @@
     <div class="card-body">
         <div class="w-full overflow-x-auto">
             <div class="flex flex-row mb1">
-                <div style="width: 300px">&nbsp;</div>
+                <div style="width: 350px">&nbsp;</div>
                 @foreach($tenant->users as $user)
+                    @if($user->role_id == 2 || $user->role_id == 1)
+                        @continue
+                    @endif
                     <div class="me-4" style="width: 150px; text-align: center">
                         <p style="margin-bottom: -35px">{{$user->name}}</p> <br> <span><small>({{$user->role->name}})</small></span>
                     </div>
@@ -18,12 +26,14 @@
             </div>
             @foreach($permissions as $permission)
                 <div class="flex flex-row mb-1 mt-1">
-                    <div style="width: 300px">
+                    <div style="width: 350px">
                         <p style="margin-bottom: -10px">{{$permission->name}}</p>
                         <small><i>{{$permission->description}}</i></small>
                     </div>
                     @foreach($tenant->users as $user)
-
+                        @if($user->role_id == 2 || $user->role_id == 1)
+                            @continue
+                        @endif
                             <div class="me-4" style="width: 150px; text-align: center">
                                 <input
                                     type="checkbox"
@@ -70,12 +80,14 @@
                         </div>
                     </div>
 
-                    <div class="sm:col-span-4">
-                        <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Paypal Client ID</label>
-                        <div class="mt-2">
-                            <input @if(auth()->user()->role_id != 1) disabled readonly @endif type="text" value="{{$tenant->paypal_client_id}}" name="paypal_client_id" id="paypal_client_id" autocomplete="paypal_client_id" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    @if($tenant->has_paypal_account)
+                        <div class="sm:col-span-4">
+                            <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Paypal Client ID</label>
+                            <div class="mt-2">
+                                <input @if(auth()->user()->role_id != 1) disabled readonly @endif type="text" value="{{$tenant->paypal_client_id}}" name="paypal_client_id" id="paypal_client_id" autocomplete="paypal_client_id" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
                         </div>
-                    </div>
+                    @endif
 
                     <div class="sm:col-span-1">
                         <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">&nbsp;</label>

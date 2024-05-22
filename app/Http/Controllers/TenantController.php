@@ -86,6 +86,9 @@ class TenantController extends Controller
 
     public function update_tenant_data(Request $request){
 
+        if(!Controller::checkPermission('modifica_impostazioni'))
+            return redirect()->back();
+
         $tenant = Tenant::find($request->tenant_id);
 
         if(auth()->user()->role_id != 1){

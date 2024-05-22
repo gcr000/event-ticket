@@ -49,7 +49,9 @@
                                 <div class="relative mt-2 rounded-md shadow-sm">
                                     <select onchange="setPagamentoPrice(this.value)" name="payment_request" class ="bg-gray-50 shadow-lg border border-gray-800 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="0" selected>No</option>
-                                        {{--<option value="2">Si</option>--}}
+                                        @if(\Illuminate\Support\Facades\Auth::user()->tenant->has_paypal_account == 1)
+                                            <option value="2">Si</option>
+                                        @endif
                                     </select>
                                 </div>
                             </div>
@@ -65,10 +67,10 @@
                             </div>
 
                             <div class="col w-1/3 ms-4 ">
-                                {{--<label for="" class="block text-sm font-medium leading-6 text-gray-900">Costo prenotazione</label>
+                                <label for="" class="block text-sm font-medium leading-6 text-gray-900">Costo prenotazione</label>
                                 <div class="relative mt-2 rounded-md shadow-sm">
                                     <input disabled id="payment_request_input" name="payment_request_input" value="" min="" step="0.01" type="number" style="height: 46px" class="bg-gray-300 block w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                </div>--}}
+                                </div>
                             </div>
                         </div>
                     </div>
