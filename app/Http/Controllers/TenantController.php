@@ -103,7 +103,7 @@ class TenantController extends Controller
         $tenant->email = $request->email;
         $tenant->phone = $request->phone;
 
-        if(auth()->user()->role_id == 1)
+        if(auth()->user()->role_id == 1 && $tenant->has_paypal_account)
             $tenant->paypal_client_id = $request->paypal_client_id;
 
         $tenant->save();

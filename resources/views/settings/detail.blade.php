@@ -8,32 +8,45 @@
 
 
 <div class="card border mb-3 p-2" style="border-radius: 5px">
-    {{--<div class="card-header mb-5">
-        --}}{{--<h3>Tenant: <b>{{$tenant->name}}</b></h3>--}}{{--
-    </div>--}}
-    <div class="card-body">
-        <div class="w-full overflow-x-auto">
-            <div class="flex flex-row mb1">
-                <div style="width: 350px">&nbsp;</div>
-                @foreach($tenant->users as $user)
-                    @if($user->role_id == 2 || $user->role_id == 1)
-                        @continue
-                    @endif
-                    <div class="me-4" style="width: 150px; text-align: center">
-                        <p style="margin-bottom: -35px">{{$user->name}}</p> <br> <span><small>({{$user->role->name}})</small></span>
-                    </div>
-                @endforeach
-            </div>
-            @foreach($permissions as $permission)
-                <div class="flex flex-row mb-1 mt-1">
-                    <div style="width: 350px">
-                        <p style="margin-bottom: -10px">{{$permission->name}}</p>
-                        <small><i>{{$permission->description}}</i></small>
-                    </div>
+
+    @php($countUsersNotAdmin = 0)
+    @foreach($tenant->users as $user)
+        @if($user->role_id != 1 && $user->role_id != 2)
+            @php($countUsersNotAdmin++)
+        @endif
+    @endforeach
+
+    @if($countUsersNotAdmin == 0)
+        <div class="card-body">
+            <p>
+                Nessun utente a cui poter assegnare permessi.
+                <br> <span><small>(Tutti gli utenti sono admin)</small></span>
+            </p>
+        </div>
+    @else
+        <div class="card-body">
+            <div class="w-full overflow-x-auto">
+                <div class="flex flex-row mb1">
+                    <div style="width: 350px">&nbsp;</div>
                     @foreach($tenant->users as $user)
                         @if($user->role_id == 2 || $user->role_id == 1)
                             @continue
                         @endif
+                        <div class="me-4" style="width: 150px; text-align: center">
+                            <p style="margin-bottom: -35px">{{$user->name}}</p> <br> <span><small>({{$user->role->name}})</small></span>
+                        </div>
+                    @endforeach
+                </div>
+                @foreach($permissions as $permission)
+                    <div class="flex flex-row mb-1 mt-1">
+                        <div style="width: 350px">
+                            <p style="margin-bottom: -10px">{{$permission->name}}</p>
+                            <small><i>{{$permission->description}}</i></small>
+                        </div>
+                        @foreach($tenant->users as $user)
+                            @if($user->role_id == 2 || $user->role_id == 1)
+                                @continue
+                            @endif
                             <div class="me-4" style="width: 150px; text-align: center">
                                 <input
                                     type="checkbox"
@@ -47,14 +60,15 @@
                                 >
                             </div>
 
-                    @endforeach
-                </div>
-                @if(!$loop->last)
-                    <hr>
-                @endif
-            @endforeach
+                        @endforeach
+                    </div>
+                    @if(!$loop->last)
+                        <hr>
+                    @endif
+                @endforeach
+            </div>
         </div>
-    </div>
+    @endif
 </div>
 <br>
 <h3 style="font-weight: 900">Dati generali</h3>
@@ -64,8 +78,18 @@
             <div class="border-b border-gray-900/10 pb-12">
                 <p class="mt-1 text-sm leading-6 text-gray-600">Informazioni relative all'istanza del cliente</p>
 
+                <div class="mt-3 mb-3 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-9">
+                    <div class="sm:col-span-12 border p-4">
+                        @if($tenant->has_paypal_account)
+                            <p>Pagamento delle prenotazioni con Paypal: <b>Attivo</b></p>
+                        @else
+                            <p>Pagamento delle prenotazioni con Paypal: <b>Non attivo</b></p>
+                        @endif
+                        <p>Numero massimo di utenti da poter registrare in piattaforma: <b>{{$tenant->max_users_count}}</b></p>
+                        <p>Numero massimo di eventi da poter salvare al mese: <b>{{$tenant->max_events_count}}</b></p>
+                    </div>
+                </div>
                 <div class="mt-3 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-9">
-
                     <div class="sm:col-span-2">
                         <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
                         <div class="mt-2">
