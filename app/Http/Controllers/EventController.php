@@ -55,7 +55,6 @@ class EventController extends Controller
         $eventsMonthCount = Event::query()
             ->where('tenant_id', auth()->user()->tenant_id)
             ->whereMonth('datetime_from', now())
-            ->where('is_archiviato', false)
             ->count();
 
         if($eventsMonthCount >= auth()->user()->tenant->max_events_count)
